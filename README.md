@@ -9,7 +9,7 @@ Practice cosplay costume rental app
     ```
 2. Create your `.venv`
     ```
-    cd Amelyn-Collection && python -m venv .venv && .env/Scripts/activate 
+    cd Amelyn-Collection && python -m venv .venv && .venv/Scripts/activate 
     ```
 3. Install dependencies
     ```
