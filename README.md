@@ -7,9 +7,9 @@ Practice cosplay costume rental app
     ```
     git clone https://github.com/syasul/Amelyn-Collection.git
     ```
-2. Create your `.env`
+2. Create your `.venv`
     ```
-    cd Amelyn-Collection && python -m venv .env && .env/Scripts/activate 
+    cd Amelyn-Collection && python -m venv .venv && .env/Scripts/activate 
     ```
 3. Install dependencies
     ```
