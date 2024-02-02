@@ -15,3 +15,7 @@ Practice cosplay costume rental app
     ```
     python -m pip install -r requirements.txt
     ```
+4. Run development server
+    ```
+    python manage.py runserver
+    ```
