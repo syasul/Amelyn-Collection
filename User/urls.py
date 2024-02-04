@@ -4,15 +4,15 @@ from . import views
 
 urlpatterns = [
     # user
-    path('signup/', views.userSignUp, name="userSignUp"),
-    path('activate/<str:token>/', views.accountActivation, name='activate'),
-    path('signin/', views.userSignIn, name='userSignIn'),
-    path('user/', views.user, name='user'),
+    path('signup/', views.userSignUpView, name="userSignUp"),
+    path('activate/<str:token>/', views.accountActivationView, name='activate'),
+    path('signin/', views.userSignInView, name='userSignIn'),
+    path('user/', views.userView, name='user'),
 
     # admin
-    path('admin/', views.admin, name='admin'),
-    path('login-admin/', views.adminSignIn, name='adminSignIn'),
+    path('admin/', views.adminView, name='admin'),
+    path('login-admin/', views.adminSignInView, name='adminSignIn'),
     
     # shared
-    path('logout/', views.logout, name='logout'),
+    path('logout/', views.logoutView, name='logout'),
 ]

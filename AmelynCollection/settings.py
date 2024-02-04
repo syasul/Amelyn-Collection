@@ -37,6 +37,10 @@ AUTH_USER_MODEL = 'User.CustomUser'
 
 # Application definition
 
+APP_NAME = os.getenv('APP_NAME')
+APP_VERSION = os.getenv('APP_VERSION')
+APP_HOST = os.getenv('APP_HOST')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -145,10 +149,10 @@ USE_TZ = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'your_email_address'
-EMAIL_HOST_PASSWORD = 'your_email_password'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'your_default_from_email_address'
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
 
 
 # Static files (CSS, JavaScript, Images)
