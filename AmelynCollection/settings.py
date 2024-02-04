@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'User.CustomUser'
+
 
 # Application definition
 
@@ -38,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth',
+    'User',
+    'Product',
+    'Order',
+    'Cart',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +122,14 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'your_email_host'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'your_email_address'
+EMAIL_HOST_PASSWORD = 'your_email_password'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'your_default_from_email_address'
 
 
 # Static files (CSS, JavaScript, Images)
