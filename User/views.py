@@ -1,21 +1,14 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.core.mail import send_mail
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.contrib.auth.tokens import default_token_generator
+from utils.generic_utils import GenericUtils
+from User.models import AccountVerification, CustomUser as User
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from allauth.account.utils import send_email_confirmation
 
-
-def register(request):
+# user handlers
+def userSignUp(request):
     if request.method == 'POST':
         firstName = request.POST.get('firstName')
         lastName = request.POST.get('lastName')
@@ -23,59 +16,76 @@ def register(request):
         password = request.POST.get('password')
 
         # Create a user without saving to the database
-        user = User(first_name=firstName, last_name=lastName, email=email)
+        isEmailExists = User.objects.filter(email=email).exists()
+        if isEmailExists:
+            isEmailVerified = AccountVerification.objects.filter(user__email=email).exists()
+            if isEmailVerified:
+                messages.error(request, 'Email already exists. Please sign in')
+                return redirect('User:userSignUp')
+            else:
+                messages.error(request, 'Email already exists. Please check your email to activate your account.')
+                return redirect('User:userSignUp')
+
+        user = User(first_name=firstName, last_name=lastName, email=email, username=email)
         user.set_password(password)
         user.is_active = False  # Deactivate the user until email is confirmed
         user.save()
 
-        # Send email verification
-        send_email_confirmation(request, user)
+        # Issue a token for the user
+        AccountVerification.objects.filter(user__email=email).delete()
 
-        # Optionally, you can log the user in immediately after registration
-        login(request, user)
+        token = GenericUtils.generateRandomHex(32)
+        AccountVerification.objects.create(user=user, token=token, validUntil=timezone.now() + timedelta(days=1))
 
-        return render(request, './page/user.html', {'user': user})
+        messages.success(request, 'Account created successfully. Please check your email to activate your account.')
+        return redirect('User:userSignUp')
 
-    return render(request, './page/register.html')
+    return render(request, 'page/user/user_signup.html')
 
-@csrf_exempt
-def activate_account(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
+def accountActivation(request, token):
+    verification = AccountVerification.objects.get(token=token)
+    if verification.validUntil < timezone.now():
+        messages.error(request, 'The token has expired. Please request for a new one.')
+        return redirect('User:userSignup')
 
-    if user is not None and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
+    user = verification.user
+    user.is_active = True
+    user.save()
 
-        # Otomatis login setelah aktivasi
-        authenticated_user = authenticate(request, username=user.username, password=request.POST['password'])
-        if authenticated_user:
-            login(request, authenticated_user)
+    verification.delete()
 
-        messages.success(request, 'Your account has been activated.')
-        return redirect('User:user')
-    else:
-        messages.error(request, 'Invalid activation link.')
-        return redirect('User:login')
+    messages.success(request, 'Account activated successfully. You can now login.')
+    return redirect('User:userSignIn')
 
-def loginuser(request):
-    return render(request, './page/loginadmin.html')
 
-def loginadmin(request):
-    return render(request, './page/loginuser.html')
+def userSignIn(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = User.authenticate(email, password)
+        if user is not None:
+            login(request, user)
+            return redirect('User:user')
+        else:
+            messages.error(request, 'Invalid email or password')
+            return redirect('User:userSignIn')
+    return render(request, 'page/user/user_signin.html')
 
 @login_required
 def user(request):
-    return render(request, './page/user.html')
+    return render(request, 'page/user/user.html')
+
+# admin handlers
+
+def adminSignIn(request):
+    return render(request, 'page/admin/admin_signin.html')
 
 @login_required
 def admin(request):
-    return render(request, './page/admin.html')
+    return render(request, 'page/admin/admin.html')
 
 @login_required
 def logout(request):
     logout(request)
-    return redirect('User:register')
+    return redirect('User:userSignIn')
