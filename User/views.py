@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from utils.generic_utils import GenericUtils
 from User.models import AccountVerification, CustomUser as User
@@ -96,6 +96,20 @@ def userView(request):
 
 
 def adminSignInView(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            if user.is_superuser:
+                # Autentikasi superuser
+                login(request, user)
+                return redirect('User:admin')
+            else:
+               messages.error(request, 'Invalid email or password')
+       
+            
     return render(request, 'page/admin/admin_signin.html')
 
 
