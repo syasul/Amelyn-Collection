@@ -49,3 +49,28 @@ class EmailService(metaclass=EmailServiceMeta):
             </body>'''
         recipient_list = [user.email]
         return self.send(subject, message, recipient_list)
+    
+    def sendReminder(self, user, orderId, daysLeft):
+        subject = 'Due Date Reminder'
+        message = f'''
+            <head>
+            <style>
+            *{{font-family: "Poppins", sans-serif !important;}}
+            a.link{{color: #fff; text-decoration: none !important;padding: 10px 20px;background-color: #FCB216;border-radius: 5px;}}
+            </style>
+            </head>
+            <body>
+            <h1>{settings.APP_NAME}</h1>
+            <h3>Hi {user.first_name}!</h3>
+            <p>
+              This is a reminder that your order with order ID {orderId} is due for payment in {daysLeft} days.
+            </p>
+            <br>
+            <p>
+            Kind Regards,<br>
+            {settings.APP_NAME} Team
+            </p>
+            </body>
+            '''
+        recipient_list = [user.email]
+        return self.send(subject, message, recipient_list)
