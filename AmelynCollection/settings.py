@@ -85,7 +85,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AmelynCollection.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -160,6 +159,9 @@ DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/upload/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
