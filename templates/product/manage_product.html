@@ -35,14 +35,14 @@
           <td>{{product.description}}</td>
           <td>{{product.created_at}}</td>
           <td>{{product.updated_at}}</td>
-          <td><a href="{% url 'Product:delete-product' delete_id=product.id %}"><button type="button" class="btn btn-danger btn-sm">delete</button></a></td>
-          <td><a href="{% url 'Product:update-product' update_id=product.id %}"><button type="button" class="btn btn-warning btn-sm">update</button></a></td>
+          <td><a href="{% url 'Admin:delete-product' delete_id=product.id %}"><button type="button" class="btn btn-danger btn-sm">delete</button></a></td>
+          <td><a href="{% url 'Admin:update-product' update_id=product.id %}"><button type="button" class="btn btn-warning btn-sm">update</button></a></td>
     {% endfor %}
   </tbody>
   </table>
 
-    <a href="{% url 'Product:add-product' %}"><button type="button" class="btn btn-primary btn-sm">add</button></a></td>
-     <form class="form-inline my-2 my-lg-0" action="{% url 'Product:search-product' %}" method="POST">
+    <a href="{% url 'Admin:add-product' %}"><button type="button" class="btn btn-primary btn-sm">add</button></a></td>
+     <form class="form-inline my-2 my-lg-0" action="{% url 'Admin:search-product' %}" method="POST">
       {% csrf_token %}
       <input class="search-input form-control mr-sm-2" type="search" name="searched" placeholder="Search" aria-label="Search" required>
       <button class="btn text-light" style="background-color: green">Search</button>
