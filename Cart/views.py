@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import CartItem, Cart
 from Product.models import Product
 from core.errors import HTTPError
 from User.models import CustomUser as User
+from django.contrib import messages
 
 @login_required
 def cart(request):
@@ -44,6 +44,8 @@ def addToCart(request, product_id):
             cart_item.subtotal += product.pricePerDay
             cart_item.save()
         
+        messages.success(
+            request, 'Item berhasil ditambahkan ke keranjang belanja.')
         return redirect('Product:list-product')
     except Exception as e:
         return HTTPError().error500(e)
