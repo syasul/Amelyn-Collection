@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
-from .models import CartItem
+from .models import CartItem, Cart
 from Product.models import Product
+from core.errors import HTTPError
+from User.models import CustomUser as User
 
 @login_required
-def Cart(request):
-    current_user = request.user
+def cart(request):
+    current_user: User = request.user
     
     if not current_user.is_authenticated:
         return HttpResponse("Anda harus masuk untuk melihat keranjang belanja.")
@@ -40,14 +41,12 @@ def addToCart(request, product_id):
         
         if not created:
             cart_item.quantity += 1
-            cart_item.subtotal += product.price
+            cart_item.subtotal += product.pricePerDay
             cart_item.save()
         
         return redirect('Product:list-product')
     except Exception as e:
-        print("erro", e)
-    
-
+        return HTTPError().error500(e)
 
 def removeMenuFromCart(product_id):
     return redirect('Cart:cart')
