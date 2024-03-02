@@ -1,81 +1,157 @@
-{% extends '../base.html' %}
-{% load static %}
+  {% extends '../base.html' %}
+  {% load static %}
+  {% load mathfilters %}
 
-{% block header %}
-<style>
-    /* Additional styles */
-    .counter {
-      display: flex;
-      align-items: center;
-    }
-    .counter-btn {
-      cursor: pointer;
-    }
-    .counter-value {
-      margin: 0 10px;
-      font-size: 1.2rem;
-    }
-  </style>
-{% endblock header %}
+  {% block header %}
+  <style>
+      /* Additional styles */
+      .counter {
+        display: flex;
+        align-items: center;
+      }
+      .counter-btn {
+        cursor: pointer;
+      }
+      .counter-value {
+        margin: 0 10px;
+        font-size: 1.2rem;
+      }
+    </style>
+  {% endblock header %}
 
-{% block content %}
-<h1>cart</h1>
-<div class="p-5 row">
-   <div class="col-md-8">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-              {% for item_cart in cart_items %}
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{item_cart.image.url}}" class="img-fluid rounded-start" alt="Product Image">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{item_cart.name}}</h5>
-                                <p class="card-text">{{item_cart.description}}</p>
-                                <p class="card-text">{{item_cart.stock}}</p>
-                                <h5 class="card-title">{{item_cart.pricePerDay}}</h5>
-                                <div class="counter">
-                                    <button class="counter-btn btn btn-primary" id="decrement">-</button>
-                                    <div class="counter-value">{{item_cart.quantity}}</div>
-                                    <button class="counter-btn btn btn-primary" id="increment">+</button>
-                                  </div>
-                                <p class="card-text">Subtotal: $100</p>
-                                <a href="" class="btn btn-primary">delete</a>
+  {% block content %}
+  <h1>cart</h1>
+  <div class="p-5 row">
+    <div class="col-md-8">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                {% for item_cart in cart_items %}
+                  {% with product=item_cart.id_product %}
+                    {% with x=context_var %}
+                    
+                    
+                    <div class="card">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="Product Image">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <p class="card-text">{{ product.stock }}</p>
+                                    <h5 class="card-title">{{ product.pricePerDay }}</h5>
+                                    <div class="counter">
+                                        <button class="counter-btn btn btn-primary decrement">-</button>
+                                        <div class="counter-value" data-item-id="{{ item_cart.id }}">{{ item_cart.quantity }}</div>
+                                        <button class="counter-btn btn btn-primary increment">+</button>
+                                    </div>
+                                    <p class="card-text subtotal">Subtotal: ${{ product.pricePerDay | mul:item_cart.quantity }}</p>
+                                    <a href="{% url 'Cart:removeProductFromCart' product_id=item_cart.id %}" class="btn btn-primary">delete</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                      </div>
+                      {% endwith %}
+                    {% endwith %}
                 {% endfor %}
             </div>
+          </div>
         </div>
     </div>
-   </div>
-</div>
+    <div class="col-md-4">
+      Total Harga
+      <div class="total harga">{{ total_harga }}</div>
+      <a class="btn btn-primary" href="{% url 'Order:checkoutForm' %}">Check Out</a>
+    </div>
+  </div>
 
-<script>
-    // JavaScript code to handle counter functionality
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const decrementBtn = document.getElementById('decrement');
-      const incrementBtn = document.getElementById('increment');
-      const counterValue = document.querySelector('.counter-value');
+      const decrementBtns = document.querySelectorAll('.counter-btn.decrement');
+      const incrementBtns = document.querySelectorAll('.counter-btn.increment');
+      const counterValues = document.querySelectorAll('.counter-value');
 
-      let count = 0;
-
-      decrementBtn.addEventListener('click', function() {
-        if (count > 0) {
-          count--;
-          counterValue.textContent = count;
-        }
-      });
-
-      incrementBtn.addEventListener('click', function() {
-        count++;
-        counterValue.textContent = count;
-      });
-    });
-  </script>
-{% endblock content %}
+      counterValues.forEach((counterValue, index) => {
+        let count = parseInt(counterValue.textContent);
     
+        decrementBtns[index].addEventListener('click', function() {
+          if (count > 0) {
+            count--;
+            counterValue.textContent = count;
+            updateQuantity(index, count);
+          }
+        });
+    
+        incrementBtns[index].addEventListener('click', function() {
+          count++;
+          counterValue.textContent = count;
+          updateQuantity(index, count);
+        });
+      });
+    
+      function updateQuantity(index, count) {
+        const item_id = document.querySelectorAll('.counter-value')[index].dataset.itemId;
+        const subtotalElement = document.querySelector(`.card[data-item-id="${item_id}"] .subtotal`);
+    
+        fetch('{% url "Cart:update_quantity" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify({ item_id: item_id, new_quantity: count }),
+        })
+        .then(response => {
+          if (response.redirected) {
+            window.location.href = response.url; // Redirect to the specified URL
+          } else {
+            return response.json(); // Proceed to handle JSON response
+          }
+        })
+        .then(data => {
+          if ('subtotal' in data) {
+            if (subtotalElement) { // Memastikan elemen ditemukan sebelum mengatur textContent
+              subtotalElement.textContent = `Subtotal: $${data.subtotal.toFixed(2)}`;
+            }
+          } else if ('deleted' in data && data.deleted) {
+            // Item telah dihapus dari keranjang, hapus elemen HTML-nya
+            const cardElement = document.querySelector(`.card[data-item-id="${item_id}"]`);
+            cardElement.parentNode.removeChild(cardElement);
+          } else if ('error' in data) {
+            console.error(data.error);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+    
+      function removeItem(index) {
+        const item_id = document.querySelectorAll('.counter-value')[index].dataset.itemId;
+    
+        fetch('{% url "Cart:remove_product" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify({ item_id: item_id }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if ('deleted' in data && data.deleted) {
+            // Jika item berhasil dihapus, hapus elemen HTML-nya
+            const cardElement = document.querySelectorAll('.card')[index];
+            cardElement.parentNode.removeChild(cardElement);
+          } else if ('error' in data) {
+            console.error(data.error);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+    });
+    
+    </script>
+    
+  {% endblock content %}

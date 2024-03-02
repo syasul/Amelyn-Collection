@@ -18,6 +18,7 @@ class CartItem(models.Model):
     quantity = models.IntegerField(default=1)
     subtotal = models.IntegerField(default=0)
     
+    
     def __str__(self):
         return f"Item {self.id_cartitem} - Product: {self.product.name} - Quantity: {self.quantity} - Subtotal: {self.subtotal}"
 
