@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .models import CartItem, Cart
-from Product.models import Product
 from core.errors import HTTPError
 from django.contrib import messages
 from django.http import JsonResponse
@@ -11,6 +9,7 @@ from django.db.models import Sum
 import json
 
 from User.models import CustomUser as User
+from .models import CartItem, Cart
 from Product.models import Product
 
 @login_required

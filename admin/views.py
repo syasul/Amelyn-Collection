@@ -1,9 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import os
+
+# Product
 from Product.models import *
 from Product.forms import *
-import os
+
+# Order
+from Order.models import *
+
 
 
 def manageProduct(request):
@@ -80,3 +86,28 @@ def searchProduct(request):
         return render(request, 'product/search_product.html', context)
 
     return HttpResponseRedirect(reverse('Admin:manage-product'))
+
+
+def manageOrder(request):
+    orders = Order.objects.filter(id_user=request.user)
+
+    context = {
+        'orders': orders
+    }
+
+    return render(request, 'order/manageOrder.html', context)
+
+def update_status(request, id_order):
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        order = Order.objects.get(pk=id_order)
+        order.status = status
+        order.save()
+    return redirect('Admin:manage-order')
+
+def delete_order(request, id_order):
+    if request.method == 'POST':
+        order = Order.objects.get(pk=id_order)
+        order.delete()
+    return redirect('Admin:manage-order')
+

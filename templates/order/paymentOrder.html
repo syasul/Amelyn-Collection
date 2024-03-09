@@ -1,0 +1,60 @@
+{% extends '../base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+    <h1>Form Payment</h1>
+    <div class="p-5 row">
+        <div class="col-md-8">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12">
+                    {% for item_order in order_items %}
+                      {% with product=item_order.id_product %}
+                        {% with x=context_var %}  
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="Product Image">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">{{ product.description }}</p>
+                                        <p class="card-text">{{ product.stock }}</p>
+                                        <h5 class="card-title">{{ product.pricePerDay }}</h5>
+                                        <div class="counter">
+                                            <div class="counter-value" data-item-id="{{ item_order.id }}">{{ item_order.quantity }}</div>
+                                        </div>
+                                        <p class="card-text subtotal">Subtotal: ${{ product.pricePerDay | mul:item_order.quantity }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                          {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+          Total Harga
+          <div class="total harga">{{ grand_total }}</div>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Payment Receipt</label>
+              <input type="file" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" name="payment_receipt_image_path">
+            </div>
+            <button class="btn btn-primary" type="submit">Payment</button>
+          </form>
+
+          
+        </div>
+      </div>
+{% endblock content %}
+    

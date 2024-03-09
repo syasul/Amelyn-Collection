@@ -1,0 +1,49 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block header %}
+    
+{% endblock header %}
+
+{% block content %}
+    <h1>Pesanan Anda</h1>
+    {% if order_details %}
+{% for order_detail in order_details %}
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Order ID: {{ order_detail.order.id }}</h5>
+        <p>Status: {{ order_detail.order.status }}</p>
+        <a class="btn btn-danger" href="">Kembalikan</a>
+    </div>
+    <div class="card-body">
+        <p>Alamat Pengiriman: {{ order_detail.order.address }}</p>
+        <p>Total Harga: ${{ order_detail.order.grand_total }}</p>
+        <p>Tanggal Mulai: {{ order_detail.order.start_date }}</p>
+        <p>Tanggal Selesai: {{ order_detail.order.end_date }}</p>
+        
+        <h6>Barang yang Dipesan:</h6>
+        <ul class="list-group">
+            {% for order_item in order_detail.order_items %}
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="{{ order_item.id_product.image.url }}" class="img-fluid rounded-start" alt="Product Image">
+                    </div>
+                    <div class="col-md-9">
+                        <h6>{{ order_item.id_product.name }}</h6>
+                        <p>Jumlah: {{ order_item.quantity }}</p>
+                        <p>Subtotal: ${{ order_item.subtotal }}</p>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p>Anda belum memiliki pesanan.</p>
+{% endif %}
+{% endblock content %}
+    
+    
