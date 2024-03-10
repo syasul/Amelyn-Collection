@@ -79,6 +79,7 @@ def paymentOrder(request):
         grand_total = jumlah_hari * total_harga
 
         if request.method == "POST":
+
             payment_receipt_image_path = request.FILES.get('payment_receipt_image_path')
 
             try:
@@ -118,12 +119,14 @@ def paymentOrder(request):
         
     order_items = OrderItem.objects.filter(id_order=order)
 
+    print(cart_items)
     context = {
         'grand_total': grand_total,
         'order': order,
-        'order_items': order_items,
+        'cart_items': cart_items,
+        # 'order_items': order_items,
     }
-
+    
     return render(request, 'order/paymentOrder.html', context)
 
 

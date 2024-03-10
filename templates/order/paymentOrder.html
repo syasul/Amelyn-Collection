@@ -12,7 +12,7 @@
           <div class="container">
               <div class="row">
                   <div class="col-md-12">
-                    {% for item_order in order_items %}
+                    {% for item_order in cart_items %}
                       {% with product=item_order.id_product %}
                         {% with x=context_var %}  
                         <div class="card">
