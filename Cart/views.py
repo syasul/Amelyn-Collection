@@ -49,15 +49,13 @@ def addToCart(request, product_id):
         cart_item, created = CartItem.objects.get_or_create(id_cart=cart, id_product=product)
 
         if not created:
-            # Jika item sudah ada dalam keranjang, tingkatkan kuantitas dan hitung ulang subtotal
             cart_item.quantity += 1
-            cart_item.subtotal += product.pricePerDay  # Tambahkan harga produk ke subtotal
-            cart_item.save()  # Simpan perubahan ke dalam basis data
+            cart_item.subtotal += product.pricePerDay
+            cart_item.save()
 
         else:
-            # Jika item baru ditambahkan ke keranjang, hitung subtotal dari harga produk
             cart_item.subtotal = product.pricePerDay
-            cart_item.save()  # Simpan item baru ke dalam basis data
+            cart_item.save()
 
         messages.success(
             request, 'Item berhasil ditambahkan ke keranjang belanja.')
@@ -71,8 +69,10 @@ def removeProductFromCart(request, product_id):
         return redirect('Cart:cart')
     except Exception as e:
         return HTTPError().error500(e)
-    
+
+@require_POST
 def update_quantity(request):
+    current_user = request.user
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         try:
             data = json.loads(request.body)
@@ -87,7 +87,9 @@ def update_quantity(request):
             cart_item = CartItem.objects.get(id=item_id)
             if new_quantity == 0:
                 cart_item.delete()
-                return JsonResponse({'deleted': True})
+                cart_items = CartItem.objects.filter(id_cart=cart_item.id_cart)
+                total_harga = sum([item.subtotal for item in cart_items])
+                return JsonResponse({'deleted': True, 'total_harga': total_harga})
 
             # Update quantity
             cart_item.quantity = new_quantity
@@ -97,14 +99,18 @@ def update_quantity(request):
             cart_item.subtotal = cart_item.id_product.pricePerDay * new_quantity
             cart_item.save()
 
-            subtotal = cart_item.subtotal
-            return JsonResponse({'subtotal': subtotal})
+            # Recalculate total harga
+            cart, created = Cart.objects.get_or_create(id_user=current_user)
+            total_harga = CartItem.objects.filter(id_cart=cart).aggregate(total=Sum('subtotal'))['total'] or 0
+
+            return JsonResponse({'subtotal': cart_item.subtotal, 'total_harga': total_harga})
         except CartItem.DoesNotExist:
             return JsonResponse({'error': 'Cart item not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)
+
     
     
 @require_POST
