@@ -7,6 +7,6 @@ class UserConfig(AppConfig):
 
     def ready(self):
         # NOTE: Don't delete these below lines, it's for scheduled task
-        # from scheduled import due_date_reminder
-        # due_date_reminder.start()
+        from scheduled import due_date_reminder
+        due_date_reminder.start()
         pass

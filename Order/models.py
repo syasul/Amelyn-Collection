@@ -12,8 +12,8 @@ class Order(models.Model):
     delivery_receipt_code = models.CharField(max_length=255)
     STATUS_CHOICES = (
     ("Unconfirm", "Unconfirm"),
-    ("Packed", "Packed"),
-    ("Sent", "Sent"),
+    ("Confirmed", "Confirmed"),
+    ("Delivered", "Delivered"),
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     payment_receipt_image_path = models.TextField()
@@ -29,7 +29,7 @@ class OrderItem(models.Model):
     id_product = models.ForeignKey(Product, on_delete=models.CASCADE                                                                                                                                                                                                                                          )
     quantity = models.IntegerField()
     subtotal = models.IntegerField()
-    created_at = models.DateField(default=timezone.now())
+    created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
 class ReturnOrder(models.Model):
@@ -42,7 +42,7 @@ class ReturnOrder(models.Model):
         ('Received', 'Received'),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    created_at = models.DateField(default=timezone.now())
+    created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     
 

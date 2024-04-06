@@ -133,7 +133,7 @@ def paymentOrder(request):
 @login_required
 def PesananSaya(request):
     current_user = request.user
-    orders = Order.objects.filter(id_user=current_user).order_by('-create_at')
+    orders = Order.objects.filter(id_user=current_user).order_by('-created_at')
     order_details = []
 
     for order in orders:

@@ -89,7 +89,7 @@ def searchProduct(request):
 
 
 def manageOrder(request):
-    orders = Order.objects.filter(id_user=request.user)
+    orders = Order.objects.all()
 
     context = {
         'orders': orders
