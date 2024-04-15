@@ -41,7 +41,7 @@ class ReturnOrder(models.Model):
         ('Sent', 'Sent'),
         ('Received', 'Received'),
     ]
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Sent')
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     

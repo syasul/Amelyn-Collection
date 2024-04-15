@@ -7,5 +7,4 @@ class ReturnOrderforms(forms.ModelForm):
         fields = (
             "return_receipt_code",
             "image",
-            "status",
             )
