@@ -90,11 +90,9 @@ def searchProduct(request):
 
 def manageOrder(request):
     orders = Order.objects.all()
-
     context = {
         'orders': orders
     }
-
     return render(request, 'order/manageOrder.html', context)
 
 def update_status(request, id_order):
@@ -110,4 +108,26 @@ def delete_order(request, id_order):
         order = Order.objects.get(pk=id_order)
         order.delete()
     return redirect('Admin:manage-order')
+
+def manageReturnOrder(request):
+    returnOrder = ReturnOrder.objects.all()
+    context = {
+        'returnOrders':returnOrder
+    }
+    return render(request, 'order/manageReturnOrder.html',context)
+
+def updateReturnOrder(request, id_return_order):
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        returnOrder = ReturnOrder.objects.get(id_return_order=id_return_order)
+        returnOrder.status = status
+        returnOrder.save()
+    return redirect('Admin:manage-return-order')
+
+def deleteReturnOrder(request, id_return_order):
+    if request.method == 'POST':
+        returnOrder = ReturnOrder.objects.get(id_return_order=id_return_order)
+        returnOrder.delete()
+    return redirect('Admin:manage-return-order')
+    
 

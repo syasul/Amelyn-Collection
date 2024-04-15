@@ -9,11 +9,12 @@
     <h1>Pesanan Anda</h1>
     {% if order_details %}
 {% for order_detail in order_details %}
+
 <div class="card mb-3">
     <div class="card-header">
         <h5>Order ID: {{ order_detail.order.id }}</h5>
         <p>Status: {{ order_detail.order.status }}</p>
-        <a class="btn btn-danger" href="">Kembalikan</a>
+        <a class="btn btn-danger" href="{% url 'Order:return-order' order_id=order_detail.order.id %}">Kembalikan</a>
     </div>
     <div class="card-body">
         <p>Alamat Pengiriman: {{ order_detail.order.address }}</p>

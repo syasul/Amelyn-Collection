@@ -14,5 +14,10 @@ urlpatterns = [
     # order
     path('manage-order/', views.manageOrder, name="manage-order"),
     path('update_status/<int:id_order>', views.update_status, name="update_status"),
-    path('delete_order/<int:id_order>', views.delete_order, name="delete_order")
+    path('delete_order/<int:id_order>', views.delete_order, name="delete_order"),
+    
+    # return order
+    path('manage-return-order/', views.manageReturnOrder, name='manage-return-order'),
+    path('update-return-order/<int:id_return_order>',views.updateReturnOrder, name='update-return-order'),
+    path('delete-return-order/<int:id_return_order>', views.deleteReturnOrder, name='delete-return-order')
 ]

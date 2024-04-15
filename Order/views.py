@@ -9,6 +9,7 @@ from datetime import datetime
 from .models import Order, OrderItem
 from User.models import CustomUser as User
 from Cart.models import Cart, CartItem
+from .forms import *
 
 # Create your views here.
 @login_required
@@ -131,9 +132,9 @@ def paymentOrder(request):
 
 
 @login_required
-def PesananSaya(request):
+def PesananSaya(request, ):
     current_user = request.user
-    orders = Order.objects.filter(id_user=current_user).order_by('-created_at')
+    orders = Order.objects.filter(id_user=current_user).order_by('-created_at')  # Perbarui pemanggilan kolom
     order_details = []
 
     for order in orders:
@@ -148,3 +149,24 @@ def PesananSaya(request):
         'order_details': order_details
     }
     return render(request, 'order/pesananSaya.html', context)
+
+def returnOrder(request, order_id):
+    order = Order.objects.get(id=order_id)
+    if request.method == 'POST':
+        returnOrder_form = ReturnOrderforms(request.POST, request.FILES)
+        if returnOrder_form.is_valid():
+            return_order = returnOrder_form.save(commit=False)
+            return_order.id_order = order
+            return_order.save()
+            return redirect('Order:pesananSaya')
+    else:
+        returnOrder_form = ReturnOrderforms()
+    
+    context = {
+        "orders": order,
+        "title": "Return order",
+        "returnOrder_form": returnOrder_form
+    }
+    return render(request, 'order/formReturnOrder.html', context)
+
+
