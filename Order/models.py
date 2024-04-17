@@ -26,7 +26,7 @@ class Order(models.Model):
     
 class OrderItem(models.Model):
     id_order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    id_product = models.ForeignKey(Product, on_delete=models.CASCADE                                                                                                                                                                                                                                          )
+    id_product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     subtotal = models.IntegerField()
     created_at = models.DateField(auto_now_add=True)
