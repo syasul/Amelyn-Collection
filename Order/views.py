@@ -158,15 +158,34 @@ def returnOrder(request, order_id):
             return_order = returnOrder_form.save(commit=False)
             return_order.id_order = order
             return_order.save()
-            return redirect('Order:pesananSaya')
+            return redirect('Order:testimonial')
     else:
         returnOrder_form = ReturnOrderforms()
     
     context = {
         "orders": order,
         "title": "Return order",
-        "returnOrder_form": returnOrder_form
+        "returnOrder_form": returnOrder_form,
     }
     return render(request, 'order/formReturnOrder.html', context)
 
+
+def testimonial(request, id):
+    user = CustomUser.objects.get(id=id)
+    if request.method == 'POST':
+        testimonial_form = TestimonialForm(request.POST)
+        if testimonial_form.is_valid():
+            testimonial = testimonial_form.save(commit=False)
+            testimonial.id_user = user  # Assign the user object to the ForeignKey field
+            testimonial.save()
+            return redirect("Order:pesananSaya")    
+    else:
+        testimonial_form = TestimonialForm()
+      
+    context = {
+        "testimonialForm": testimonial_form,
+        "users": user,
+        "title": "Testimonial",
+    }
+    return render(request, 'order/testimonialForm.html', context)
 

@@ -8,3 +8,10 @@ class ReturnOrderforms(forms.ModelForm):
             "return_receipt_code",
             "image",
             )
+
+class TestimonialForm(forms.ModelForm):
+    class Meta:
+        model = Testimonial
+        fields = (
+            "content",
+        )
