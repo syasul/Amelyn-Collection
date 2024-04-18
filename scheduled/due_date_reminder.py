@@ -25,7 +25,8 @@ def remind(user, orderId, daysLeft):
     email_service.EmailService().sendReminder(user, orderId, daysLeft)
 
 def start():
-    print('Scheduler started at: ', datetime.now())
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(startReminder, 'interval', seconds=60, id='startReminder')
-    scheduler.start()
+    # print('Scheduler started at: ', datetime.now())
+    # scheduler = BackgroundScheduler()
+    # scheduler.add_job(startReminder, 'interval', seconds=60, id='startReminder')
+    # scheduler.start()
+    pass

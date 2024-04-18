@@ -46,11 +46,8 @@ class ReturnOrder(models.Model):
     updated_at = models.DateField(auto_now=True)
     
 class Testimonial(models.Model):
-    id_testimonial = models.AutoField(primary_key=True)
+    id_testimonial = models.AutoField(primary_key=True, unique=True)
     id_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-
-
