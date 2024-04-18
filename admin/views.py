@@ -130,4 +130,15 @@ def deleteReturnOrder(request, id_return_order):
         returnOrder.delete()
     return redirect('Admin:manage-return-order')
     
+def manageTestimonial(request):
+    testimonial = Testimonial.objects.all()
+    context = {
+        'testimonials':testimonial
+    }
+    return render(request, 'order/manageTestimonial.html',context)
 
+def deleteTesimonial(request, id_testimonial):
+    if request.method == 'POST':
+        testimonial = Testimonial.objects.get(id_testimonial=id_testimonial)
+        testimonial.delete()
+    return redirect('Admin:manage-testimonial')

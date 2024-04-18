@@ -19,5 +19,9 @@ urlpatterns = [
     # return order
     path('manage-return-order/', views.manageReturnOrder, name='manage-return-order'),
     path('update-return-order/<int:id_return_order>',views.updateReturnOrder, name='update-return-order'),
-    path('delete-return-order/<int:id_return_order>', views.deleteReturnOrder, name='delete-return-order')
+    path('delete-return-order/<int:id_return_order>', views.deleteReturnOrder, name='delete-return-order'),
+    
+    # testimonial
+    path("manage-testimonial/", views.manageTestimonial, name='manage-testimonial'),
+    path("delete-testimonial/<int:id_testimonial>", views.deleteTesimonial, name='delete-testimonial')
 ]
