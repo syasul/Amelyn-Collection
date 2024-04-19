@@ -7,6 +7,7 @@ class ReturnOrderforms(forms.ModelForm):
         fields = (
             "return_receipt_code",
             "image",
+            "photo_payment_fine"
             )
 
 class TestimonialForm(forms.ModelForm):

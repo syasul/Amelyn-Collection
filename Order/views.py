@@ -30,11 +30,11 @@ def checkoutForm(request):
         # Validasi tanggal check-in harus minimal hari ini dan harus lebih awal daripada check-out
         if start_date < timezone.now().strftime('%Y-%m-%d'):
             messages.error(request, "Check-in date cannot be in the past.")
-            return HttpResponseBadRequest("Invalid Check-in Date")
+            return redirect("Order:checkoutForm")
 
         if end_date <= start_date:
             messages.error(request, "Check-out date must be after check-in date.")
-            return HttpResponseBadRequest("Invalid Check-out Date")
+            return redirect("Order:checkoutForm")
         
         current_user = request.user
         
@@ -143,6 +143,9 @@ def PesananSaya(request, ):
             'order': order,
             'order_items': order_items
         }
+        
+        order.hitung_fine()
+        
         order_details.append(order_detail)
 
     context = {
@@ -150,6 +153,7 @@ def PesananSaya(request, ):
     }
     return render(request, 'order/pesananSaya.html', context)
 
+@login_required
 def returnOrder(request, order_id):
     order = Order.objects.get(id=order_id)
     if request.method == 'POST':
@@ -169,7 +173,7 @@ def returnOrder(request, order_id):
     }
     return render(request, 'order/formReturnOrder.html', context)
 
-
+@login_required
 def testimonial(request, id):
     user = CustomUser.objects.get(id=id)
     if request.method == 'POST':

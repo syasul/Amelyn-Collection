@@ -21,6 +21,7 @@
         <p>Total Harga: ${{ order_detail.order.grand_total }}</p>
         <p>Tanggal Mulai: {{ order_detail.order.start_date }}</p>
         <p>Tanggal Selesai: {{ order_detail.order.end_date }}</p>
+        <p>Denda: ${{ order_detail.order.fine }}</p>
         
         <h6>Barang yang Dipesan:</h6>
         <ul class="list-group">
@@ -33,7 +34,7 @@
                     <div class="col-md-9">
                         <h6>{{ order_item.id_product.name }}</h6>
                         <p>Jumlah: {{ order_item.quantity }}</p>
-                        <p>Subtotal: ${{ order_item.subtotal }}</p>
+                        <p>Subtotal: Rp. {{ order_item.subtotal }}</p>
                     </div>
                 </div>
             </li>

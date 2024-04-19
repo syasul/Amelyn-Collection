@@ -1,8 +1,11 @@
 from django.db import models
+from datetime import datetime, timedelta
+from django.core.validators import MinValueValidator
 from django.utils import timezone
 
 from User.models import CustomUser
 from Product.models import Product
+
 
 class Order(models.Model):
     id_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -16,10 +19,32 @@ class Order(models.Model):
     ("Delivered", "Delivered"),
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-    payment_receipt_image_path = models.TextField()
+    payment_receipt_image_path = models.ImageField(upload_to="images/")
     address = models.TextField()
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    fine = models.BigIntegerField(default=0)
+    
+    def hitung_fine(self):
+        if self.status == 'Delivered':  # Pastikan status adalah 'Delivered'
+            if self.end_date < timezone.now().date():  # Periksa apakah sudah lewat tanggal pengembalian
+                # Hitung jumlah hari keterlambatan
+                hari_keterlambatan = (timezone.now().date() - self.end_date).days
+                if hari_keterlambatan > 0:
+                    # Hitung fine: 2% dari grand total per hari telat
+                    self.fine = (self.grand_total * 0.02) * hari_keterlambatan
+                else:
+                    self.fine = 0
+            else:
+                self.fine = 0
+        else:
+            self.fine = 0
+
+
+
+    def save(self, *args, **kwargs):
+        self.hitung_fine()  # Hitung denda sebelum menyimpan
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"Order with id : {self.id}"
@@ -37,6 +62,7 @@ class ReturnOrder(models.Model):
     id_order = models.ForeignKey(Order, on_delete=models.CASCADE)
     return_receipt_code = models.CharField(max_length=255)
     image = models.ImageField(upload_to="images/")
+    photo_payment_fine = models.ImageField(upload_to='return_photos', null=True, blank=True)
     STATUS_CHOICES = [
         ('Sent', 'Sent'),
         ('Received', 'Received'),
@@ -44,6 +70,14 @@ class ReturnOrder(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Sent')
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        # Validasi pengembalian terlambat
+        if self.order.tanggal_pengembalian and self.order.tanggal_pengembalian < timezone.now().date():
+            if not self.photo_payment_fine:
+                raise ValueError("Foto pengembalian wajib diunggah untuk pengembalian terlambat")
+        super().save(*args, **kwargs)
+
     
 class Testimonial(models.Model):
     id_testimonial = models.AutoField(primary_key=True, unique=True)
