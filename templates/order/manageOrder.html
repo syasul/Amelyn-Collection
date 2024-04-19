@@ -17,6 +17,7 @@
                 <th>ID User</th>
                 <th>Tanggal Mulai</th>
                 <th>Tanggal Selesai</th>
+                <th>Denda</th>
                 <th>Total</th>
                 <th>Status</th>
                 <th>Alamat</th>
@@ -30,6 +31,7 @@
                 <td>{{ order.id_user }}</td>
                 <td>{{ order.start_date }}</td>
                 <td>{{ order.end_date }}</td>
+                <td>{{ order.fine }}</td>
                 <td>{{ order.grand_total }}</td>
                 <td>
                   <form action="{% url 'Admin:update_status' id_order=order.id %}" method="POST">

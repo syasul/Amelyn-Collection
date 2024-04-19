@@ -17,6 +17,7 @@
                 <th>ID Order</th>
                 <th>Receipt Code</th>
                 <th>Image Path</th>
+                <th>Image Payment Fine</th>
                 <th>Status</th>
                 <th>Created at</th>
                 <th>Updated at</th>
@@ -30,6 +31,7 @@
                 <td>{{ returnOrder.id_order }}</td>
                 <td>{{ returnOrder.return_receipt_code }}</td>
                 <td>{{ returnOrder.image }}</td>
+                <td>{{ returnOrder.photo_payment_fine }}</td>
                 <td>
                     <form action="{% url 'Admin:update-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
                       {% csrf_token %}

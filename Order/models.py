@@ -14,9 +14,9 @@ class Order(models.Model):
     grand_total = models.BigIntegerField()
     delivery_receipt_code = models.CharField(max_length=255)
     STATUS_CHOICES = (
-    ("Unconfirm", "Unconfirm"),
-    ("Confirmed", "Confirmed"),
-    ("Delivered", "Delivered"),
+        ("Unconfirm", "Unconfirm"),
+        ("Confirmed", "Confirmed"),
+        ("Delivered", "Delivered"),
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     payment_receipt_image_path = models.ImageField(upload_to="images/")
@@ -26,12 +26,10 @@ class Order(models.Model):
     fine = models.BigIntegerField(default=0)
     
     def hitung_fine(self):
-        if self.status == 'Delivered':  # Pastikan status adalah 'Delivered'
-            if self.end_date < timezone.now().date():  # Periksa apakah sudah lewat tanggal pengembalian
-                # Hitung jumlah hari keterlambatan
+        if self.status == 'Delivered':
+            if self.end_date < timezone.now().date():
                 hari_keterlambatan = (timezone.now().date() - self.end_date).days
                 if hari_keterlambatan > 0:
-                    # Hitung fine: 2% dari grand total per hari telat
                     self.fine = (self.grand_total * 0.02) * hari_keterlambatan
                 else:
                     self.fine = 0
@@ -40,10 +38,8 @@ class Order(models.Model):
         else:
             self.fine = 0
 
-
-
     def save(self, *args, **kwargs):
-        self.hitung_fine()  # Hitung denda sebelum menyimpan
+        self.hitung_fine()
         super().save(*args, **kwargs)
     
     def __str__(self):
