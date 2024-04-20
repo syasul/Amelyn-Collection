@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin-top: 75px;
+}
+
+.next-button {
+    background-color: #5c8374;
+    color: white;
+}
+
+.next-button:hover {
+    color: white;
+}

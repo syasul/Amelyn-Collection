@@ -1,32 +1,101 @@
 {% extends '../base.html' %}
 {% load static %}
 
-{% block content %}
-    <a href="{% url 'Cart:cart' %}" class="btn btn-primary col-12">Cart</a>
-    <div class="row row-cols-1">
-      {% for product in products  %}
-      <div class="col-12 col-md-2 mb-2">
-        <div class="card" style="width: 18rem;">
-          <img src="{{product.image.url}}" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{product.name}}</h5>
-            <p class="card-text">{{product.pricePerDay}}</p>
-            <p class="card-text">{{product.stock}}</p>
-            <a href="{% url 'Product:detail-product' detail_id=product.id %}" class="btn btn-primary">Detail</a>
-            
-            {% if product.stock != 0 %}
-              <form method="post" action="{% url 'Cart:add_to_cart' product_id=product.id %}">
-                {% csrf_token %}
-                <button class="btn btn-primary text-white shadow-none" type="submit">Add to Cart</button>
-              </form>
-            {% else %}
-              <button class="btn btn-primary text-white shadow-none disabled" type="submit">Add to Cart</button>
-            {% endif %}
-              
+{% block header %}
+<link rel="stylesheet" href="{% static 'css/product/list_product.css' %}">
 
-          </div>      
-        </div>
+    
+{% endblock header %}
+
+{% block content %}
+
+    <header>
+      <!-- navbar -->
+      <div class="container mb-3 fixed-top bg-white">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <img src="{% static 'img/logo.png' %}" alt="" width="30">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Product</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Hi, User
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Hi, User</a></li>
+                    <li><a class="dropdown-item" href="#">My Order</a></li>
+                    <li><a class="dropdown-item" href="#">Log Out</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}"><img
+                      src="{% static 'img/chart-black.png' %}" alt=""></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       </div>
-      {% endfor %}
-    </div>    
+    </header>
+
+  <main>
+      <div class="container">
+          <!-- search form -->
+          <div class="col-md-3 ms-auto mb-3">
+              <form class="d-flex">
+                  <input class="form-control shadow-none me-2" type="search" placeholder="Search" aria-label="Search">
+              </form>
+          </div>
+
+          <div class="row justify-content-around">
+            {% for product in products  %}
+              <!-- card -->
+              <div class="card mb-3 shadow-sm" style="width: 20rem;">
+                  <img src="{{product.image.url}}" class="card-img-top mt-3"
+                      alt="...">
+                  <div class="card-body">
+                      <h5 class="card-title">{{product.name}}</h5>
+                      <p><b>Rp{{product.pricePerDay}}</b></p>
+                      <p class="card-text">{{product.stock}}</p>
+
+                      <div class="row">
+                          <div class="col-6">
+                              {% comment %} <a href="#" class="btn bt-sm cart-button">Add to Cart</a> {% endcomment %}
+                              {% if product.stock != 0 %}
+                              <form method="post" action="{% url 'Cart:add_to_cart' product_id=product.id %}">
+                                {% csrf_token %}
+                                <button class="btn bt-sm cart-button" type="submit">Add to Cart</button>
+                              </form>
+                            {% else %}
+                              <button class="btn bt-sm cart-button disabled" type="submit">Add to Cart</button>
+                            {% endif %}
+                          </div>
+                          <div class="col-6">
+                              <a href="{% url 'Product:detail-product' detail_id=product.id %}" class="btn description-button">Detail</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          {% endfor %}
+            
+
+          </div>
+      </div>
+  </main>
+
 {% endblock content %}

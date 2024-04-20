@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin-top: 75px;
+}
+
+.btn-reserved {
+    background-color: white;
+    color: #ff2876;
+}
+
+.line {
+    width: 70px;
+    height: 5px;
+    background-color: #1b4242;
+}
+
+.hero-section {
+    background-image: url('../../img/piqsels1.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    color: white;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 7rem;
+}
+
+.hero-section h5 {
+    margin-inline: 150px;
+}
+
+.hero-section a:hover {
+    color: #ff2876;
+    background-color: white;
+}
+
+.cart-button {
+    background-color: #9ec8b9;
+    color: white;
+    white-space: nowrap;
+}
+
+.cart-button:hover {
+    background-color: #9ec8b9;
+    color: white;
+}
+
+.description-button {
+    background-color: #5c8374;
+    color: white;
+}
+
+.description-button:hover {
+    background-color: #5c8374;
+    color: white;
+}
+
+.contact {
+    margin-right: -100px;
+}

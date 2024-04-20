@@ -1,24 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block header %}
+<link rel="stylesheet" href="{% static 'css/user/login.css' %}">
     
 {% endblock header %}
 {% block content %}
-<div class="container">
-<form method="POST">
-    {% csrf_token %}
-    
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" name="password">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
+
+<main class="d-flex justify-content-center align-items-center">
+  <div class="container">
+      <div class="row text-center">
+          <div class="col-md-7">
+              <img src="{% static 'img/loginImage.png' %}" alt="">
+          </div>
+          <div class="col-md-5 d-flex justify-content-center align-items-center">
+              <form  method="POST">
+            {% csrf_token %}
+
+                  <h3><b>Login.</b></h3>
+                  <div class="mb-3">
+                      <input type="email" class="form-control shadow-none" id="exampleInputEmail1" name="email" placeholder="Email">
+                  </div>
+                  <div class="mb-3">
+                      <input type="password" class="form-control shadow-none" id="exampleInputPassword1"
+                          placeholder="Password" name="password">
+                  </div>
+                  <button type="submit" class="btn">Login</button>
+                  <p>Don't have an account? <a href="{% url 'User:userSignUp' %}">Register</a></p>
+              </form>
+          </div>
+      </div>
+  </div>
+</main>
+
 {% endblock content %}
     

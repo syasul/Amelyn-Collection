@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin-top: 75px;
+}
+
+.cart-button {
+    background-color: #9ec8b9;
+    color: white;
+    white-space: nowrap;
+}
+
+.cart-button:hover {
+    background-color: #9ec8b9;
+    color: white;
+    white-space: nowrap;
+}
+
+.description-button {
+    background-color: #5c8374;
+    color: white;
+}
+
+.description-button:hover {
+    background-color: #5c8374;
+    color: white;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.card-img-top {
+    border-radius: 10px;
+}

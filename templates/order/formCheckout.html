@@ -2,12 +2,14 @@
 {% load static %}
 
 {% block header %}
+<link rel="stylesheet" href="{% static 'css/checkout/formCheckout.css' %}">
+
     
 {% endblock header %}
 
 {% block content %}
-    <h1>Form CheckOut</h1>
-    <form method="POST">
+    {% comment %} <h1>Form CheckOut</h1> {% endcomment %}
+    {% comment %} <form method="POST">
         {% csrf_token %}
         <div class="row mb-3">
           <div class="col">
@@ -42,6 +44,92 @@
           <textarea class="form-control shadow-none" id="address" name="address" rows="3" placeholder="Enter Address"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </form> {% endcomment %}
+
+      <header>
+        <!-- navbar -->
+        <div class="container mb-3 fixed-top bg-white">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
+                <img src="{% static 'img/logo.png' %}" alt="" width="30">
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Product</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      Hi, User
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">Hi, User</a></li>
+                      <li><a class="dropdown-item" href="#">My Order</a></li>
+                      <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#"><img
+                        src="{% static 'img/chart-black.png' %}" alt=""></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+    <main>
+        <div class="container d-flex justify-content-center mb-3">
+            <!-- form check out -->
+            <div class="col-md-6">
+                <h3 class="text-center"><b>Check Out</b></h3>
+                <form method="POST">
+                  {% csrf_token %}
+                    <div class="mb-3 form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control shadow-none" id="firstName" name="firstName" placeholder="First Name">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control shadow-none" id="lastName" name="lasttName" placeholder="Last Name">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control shadow-none" id="email" name="email"  value="{{ user_email }}" disabled>
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="checkIn" class="form-label">Check In</label>
+                        <input type="date" class="form-control shadow-none" id="checkIn" name="checkIn">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="checkOut" class="form-label">Check Out</label>
+                        <input type="date" class="form-control shadow-none" id="checkOut" name="checkOut">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="telephone" class="form-label">Telephone</label>
+                        <input type="number" class="form-control shadow-none" id="telephone" name="telephone" placeholder="Telephone">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control shadow-none" name="address" id="address" name="address" cols="30" rows="5"
+                            placeholder="Address"></textarea>
+                    </div>
+                    <button style="width: 100%;" type="submit" class="btn next-button">Next</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
 {% endblock content %}
         

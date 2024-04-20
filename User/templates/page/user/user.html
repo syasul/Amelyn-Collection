@@ -2,12 +2,243 @@
 {% load static %}
 
 {% block header %}
+<link rel="stylesheet" href="{% static 'css/user/home.css' %}">
+
     
 {% endblock header %}
 {% block content %}
-<div class="container">
+{% comment %} <div class="container">
     <h1>page User</h1>
     <a href="{% url 'User:logout' %}">LogOut</a>
-</div>
+</div> {% endcomment %}
+
+<header>
+    <!-- navbar -->
+    <div class="container mb-3 fixed-top bg-white">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="{% static 'img/logo.png' %}" alt="" width="30">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Product</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Hi, User
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Hi, User</a></li>
+                  <li><a class="dropdown-item" href="#">My Order</a></li>
+                  <li><a class="dropdown-item" href="#">Log Out</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"><img
+                    src="{% static 'img/chart-black.png' %}" alt=""></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Hero Section -->
+      <div class="hero-section rounded-4 d-flex justify-content-center align-items-center text-center flex-column">
+        <h1><b>STYLE THAT <br>PEAK</b></h1>
+        <h5 class="mt-3"><b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae iure eius aperiam dolor, similique quis,
+          voluptates porro tenetur exercitationem voluptas cupiditate facere, quae corporis! Unde nisi aut repellat ab
+          quasi!</b></h5>
+        <a href="#" class="btn btn-reserved rounded-3 mt-3">Reserved Now</a>
+      </div>
+
+
+      <!-- About -->
+      <h3 class="fw-bold mt-5">About Us</h3>
+      <hr class="line rounded-4">
+      <div class="about">
+        <div class="row">
+          <div class="col-md-7 d-flex justify-content-center align-items-center">
+            <h5>Amelyn Collection Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio a corporis autem natus
+              nihil ducimus veniam amet fugit. Quas, debitis earum molestiae nostrum nulla facere recusandae maxime
+              perspiciatis officiis vitae.</h5>
+          </div>
+          <div class="col-md-5">
+            <img src="{% static 'img/about.png' %}" width="450px" alt="" class="rounded-4">
+          </div>
+        </div>
+      </div>
+
+      <!-- New Product -->
+      <h3 class="fw-bold mt-5">New Products</h3>
+      <hr class="line rounded-4">
+      <div class="row justify-content-around">
+        <!-- card -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Clothes 1</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+              the card's content.</p>
+            <p><b>Rp. 200.000,-/day</b></p>
+            <div class="row">
+              <div class="col-6">
+                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn bt-sm description-button">Description</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Clothes 1</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+              the card's content.</p>
+            <p><b>Rp. 200.000,-/day</b></p>
+            <div class="row">
+              <div class="col-6">
+                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn bt-sm description-button">Description</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Clothes 1</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+              the card's content.</p>
+            <p><b>Rp. 200.000,-/day</b></p>
+            <div class="row">
+              <div class="col-6">
+                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn bt-sm description-button">Description</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- card -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Clothes 1</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+              the card's content.</p>
+            <p><b>Rp. 200.000,-/day</b></p>
+            <div class="row">
+              <div class="col-6">
+                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn bt-sm description-button">Description</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimoni -->
+      <h3 class="fw-bold mt-5">Testimoni</h3>
+      <hr class="line rounded-4">
+      <div class="row justify-content-around text-center">
+        <!-- testi -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <div class="card-body">
+            <h5 class="card-title">User's</h5>
+            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
+              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
+              reiciendis nulla ipsum nisi assumenda!</p>
+          </div>
+        </div>
+
+        <!-- testi -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <div class="card-body">
+            <h5 class="card-title">User's</h5>
+            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
+              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
+              reiciendis nulla ipsum nisi assumenda!</p>
+          </div>
+        </div>
+
+        <!-- testi -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <div class="card-body">
+            <h5 class="card-title">User's</h5>
+            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
+              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
+              reiciendis nulla ipsum nisi assumenda!</p>
+          </div>
+        </div>
+
+        <!-- testi -->
+        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+          <div class="card-body">
+            <h5 class="card-title">User's</h5>
+            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
+              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
+              reiciendis nulla ipsum nisi assumenda!</p>
+          </div>
+        </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container text-center mt-5">
+      <p>UPSKILL FOR A BETTER FUTURE</p>
+      <h1><b>Request More Information</b></h1>
+      <h6>AMELYN COLLECTION is a clinical stage healthcare company which is developing a unique.</h6>
+      <div class="d-flex justify-content-around mt-5">
+        <img src="{% static 'img/logo.png' %}" alt="" height="35px">
+        <a href="#" class="btn bt-sm description-button contact rounded-3">Contact Us</a>
+        <div class="row">
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/linkedin.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/b.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/ig.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/yt.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            
+        </div>
+      </div>
+      <p class="mt-3">&copy;2024-AMELYN COLLECTION</p>
+    </div>
+  </footer>
+
 {% endblock content %}
     

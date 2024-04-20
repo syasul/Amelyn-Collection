@@ -2,31 +2,41 @@
 {% load static %}
 
 {% block header %}
+<link rel="stylesheet" href="{% static 'css/user/login.css' %}">
 
 {% endblock header %}
 {% block content %}
-<div class="container">
-  <form method="POST">
-    {% csrf_token %}
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">First Name</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" name="firstName">
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Last Name</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" name="lastName">
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" name="password">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
+
+<main class="d-flex justify-content-center align-items-center">
+  <div class="container">
+      <div class="row text-center">
+          <div class="col-md-7">
+              <img src="{% static 'img/registerImage.png' %}" alt="">
+          </div>
+          <div class="col-md-5 d-flex justify-content-center align-items-center">
+              <form method="POST">
+                {% csrf_token %}
+                  <h3><b>Register.</b></h3>
+                  <div class="mb-3">
+                    <input type="text" class="form-control shadow-none" id="anu" name="firstName" placeholder="First Name">
+                  </div>
+                  <div class="mb-3">
+                    <input type="text" class="form-control shadow-none" id="anu" name="lastName" placeholder="Last Name">
+                  </div>
+                  <div class="mb-3">
+                      <input type="email" class="form-control shadow-none" name="email" id="exampleInputEmail1" placeholder="Email">
+                  </div>
+                  <div class="mb-3">
+                      <input type="password" class="form-control shadow-none" name="password" id="exampleInputPassword1"
+                          placeholder="Password">
+                  </div>
+                  <button type="submit" class="btn">Register</button>
+                  <p>Already have an account? <a href="{% url 'User:userSignIn' %}">Sign In</a></p>
+              </form>
+          </div>
+      </div>
+  </div>
+</main>
 
 <a href="{% url 'User:logout' %}">logout</a>
 {% endblock content %}

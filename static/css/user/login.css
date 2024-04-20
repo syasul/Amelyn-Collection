@@ -1,0 +1,49 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin-top: 75px;
+}
+
+main {
+    height: 100vh;
+}
+
+.col-md-7 img {
+    /* max-width: 100%; */
+    width: 100%;
+}
+
+.col-md-5 h3 {
+    margin-bottom: 50px;
+}
+
+.col-md-5 button {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #5c8374;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.col-md-5 button:hover {
+    color: white;
+}
+
+form p {
+    color: silver;
+}
+
+form p a {
+    color: black;
+}
+
+form p a:hover {
+    color: #5c8374;
+}
