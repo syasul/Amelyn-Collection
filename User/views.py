@@ -94,7 +94,7 @@ def userSignInView(request):
     return render(request, 'page/user/user_signin.html')
 
 
-@login_required
+
 def userView(request):
     return render(request, 'page/user/user.html')
 
@@ -122,7 +122,9 @@ def adminSignInView(request):
 
 @login_required
 def dashboardView(request):
-    
+    if not request.user.is_superuser:
+        return redirect("User:user")
+        
     userCount = CustomUser.objects.filter(is_superuser=False).count()
     productCount = Product.objects.count()
     orderCount = Order.objects.count()

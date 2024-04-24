@@ -1,20 +1,20 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 import os
+
 
 # Product
 from Product.models import *
-from Product.forms import *
 
 # Order
 from Order.models import *
 
-
-
+@login_required
 def manageProduct(request):
-    
-    product_form = Productforms(request.POST or None , request.FILES or None )
+    if not request.user.is_superuser:
+        return redirect("User:user")
     
     context = {
         # 'product_form':product_form,
@@ -23,11 +23,11 @@ def manageProduct(request):
     }
     return render(request, 'product/manage_product.html', context)
 
+@login_required
 def addProduct(request):
-    # product_form = Productforms(request.POST or None , request.FILES or None )
-    # if request.method == 'POST':
-    #     if product_form.is_valid():
-    #         product_form.save()
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         product_name = request.POST.get('productName')
         product_stock = request.POST.get('productStock')
@@ -47,14 +47,12 @@ def addProduct(request):
 
         return redirect('Admin:manage-product')    
     return redirect('Admin:manage-product')
-    context = {
-        'title':'add product',
-        # 'product_form':product_form
-    } 
     
-    return render(request,'product/add_product.html', context)
 
+@login_required
 def deleteProduct(request, delete_id):
+    if not request.user.is_superuser:
+        return redirect("User:user")
     
     product = Product.objects.get(id=delete_id)
     os.remove(product.image.path)
@@ -62,38 +60,11 @@ def deleteProduct(request, delete_id):
         
     return redirect('Admin:manage-product')
 
-# def updateProduct(request, update_id):
-#     product_update = Product.objects.get(id=update_id)
-
-#     data = {
-
-#         'name': product_update.name,
-#         'stock' : product_update.stock,
-#         'pricePerDay': product_update.pricePerDay,
-#         'sizeProduct': product_update.sizeProduct,
-#         'description': product_update.description,
-#     }
-
-#     product_form = Productforms(request.POST or None, request.FILES or None, initial=data, instance=product_update)
-#     if request.method == 'POST':
-#         if product_form.is_valid():
-#             image_path = product_update.image.path
-#             if os.path.exists(image_path):
-#                 os.remove(image_path)
-#             product_form.save()
-
-#         return redirect('Admin:manage-product')
-    
-#     context = {
-
-#         'title':'update product',
-#         'product_form':product_form,
-#         'update':product_update 
-#     }
-    
-#     return render(request,'product/add_product.html', context)
-
+@login_required
 def updateProduct(request, update_id):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         product = Product.objects.get(pk=update_id)
         product.name = request.POST.get('productName')
@@ -114,7 +85,11 @@ def updateProduct(request, update_id):
         product = Product.objects.get(pk=update_id)
         return render(request, 'product/update_product.html', {'product': product})
 
+@login_required
 def searchProduct(request):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         searched = request.POST.get('searched', '')
         searched = searched.strip()
@@ -130,14 +105,22 @@ def searchProduct(request):
     return HttpResponseRedirect(reverse('Admin:manage-product'))
 
 
+@login_required
 def manageOrder(request):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     orders = Order.objects.all()
     context = {
         'orders': orders
     }
     return render(request, 'order/manageOrder.html', context)
 
+@login_required
 def update_status(request, id_order):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         status = request.POST.get('status')
         order = Order.objects.get(pk=id_order)
@@ -145,20 +128,32 @@ def update_status(request, id_order):
         order.save()
     return redirect('Admin:manage-order')
 
+@login_required
 def delete_order(request, id_order):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         order = Order.objects.get(pk=id_order)
         order.delete()
     return redirect('Admin:manage-order')
 
+@login_required
 def manageReturnOrder(request):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     returnOrder = ReturnOrder.objects.all()
     context = {
         'returnOrders':returnOrder
     }
     return render(request, 'order/manageReturnOrder.html',context)
 
+@login_required
 def updateReturnOrder(request, id_return_order):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         status = request.POST.get('status')
         returnOrder = ReturnOrder.objects.get(id_return_order=id_return_order)
@@ -166,20 +161,32 @@ def updateReturnOrder(request, id_return_order):
         returnOrder.save()
     return redirect('Admin:manage-return-order')
 
+@login_required
 def deleteReturnOrder(request, id_return_order):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         returnOrder = ReturnOrder.objects.get(id_return_order=id_return_order)
         returnOrder.delete()
     return redirect('Admin:manage-return-order')
     
+@login_required
 def manageTestimonial(request):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     testimonial = Testimonial.objects.all()
     context = {
         'testimonials':testimonial
     }
     return render(request, 'order/manageTestimonial.html',context)
 
+@login_required
 def deleteTesimonial(request, id_testimonial):
+    if not request.user.is_superuser:
+        return redirect("User:user")
+    
     if request.method == 'POST':
         testimonial = Testimonial.objects.get(id_testimonial=id_testimonial)
         testimonial.delete()

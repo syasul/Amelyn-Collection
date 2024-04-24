@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import *
-from .forms import *
 import os
 
 def listProduct(request):
