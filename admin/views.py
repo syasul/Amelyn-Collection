@@ -13,22 +13,43 @@ from Order.models import *
 
 
 def manageProduct(request):
+    
+    product_form = Productforms(request.POST or None , request.FILES or None )
+    
     context = {
+        # 'product_form':product_form,
         'title':'manage product',
         'products': Product.objects.all()
     }
     return render(request, 'product/manage_product.html', context)
 
 def addProduct(request):
-    product_form = Productforms(request.POST or None , request.FILES or None )
+    # product_form = Productforms(request.POST or None , request.FILES or None )
+    # if request.method == 'POST':
+    #     if product_form.is_valid():
+    #         product_form.save()
     if request.method == 'POST':
-        if product_form.is_valid():
-            product_form.save()
-        
-        return redirect('Admin:manage-product')
+        product_name = request.POST.get('productName')
+        product_stock = request.POST.get('productStock')
+        product_images = request.FILES.get('productImages')
+        product_price = request.POST.get('productPrice')
+        product_size = request.POST.get('productSize')
+        product_desc = request.POST.get('productDesc')
+
+        Product.objects.create(
+            name=product_name,
+            stock=product_stock,
+            image=product_images,
+            pricePerDay=product_price,
+            sizeProduct=product_size,
+            description=product_desc
+        )
+
+        return redirect('Admin:manage-product')    
+    return redirect('Admin:manage-product')
     context = {
         'title':'add product',
-        'product_form':product_form
+        # 'product_form':product_form
     } 
     
     return render(request,'product/add_product.html', context)
@@ -41,36 +62,57 @@ def deleteProduct(request, delete_id):
         
     return redirect('Admin:manage-product')
 
+# def updateProduct(request, update_id):
+#     product_update = Product.objects.get(id=update_id)
+
+#     data = {
+
+#         'name': product_update.name,
+#         'stock' : product_update.stock,
+#         'pricePerDay': product_update.pricePerDay,
+#         'sizeProduct': product_update.sizeProduct,
+#         'description': product_update.description,
+#     }
+
+#     product_form = Productforms(request.POST or None, request.FILES or None, initial=data, instance=product_update)
+#     if request.method == 'POST':
+#         if product_form.is_valid():
+#             image_path = product_update.image.path
+#             if os.path.exists(image_path):
+#                 os.remove(image_path)
+#             product_form.save()
+
+#         return redirect('Admin:manage-product')
+    
+#     context = {
+
+#         'title':'update product',
+#         'product_form':product_form,
+#         'update':product_update 
+#     }
+    
+#     return render(request,'product/add_product.html', context)
+
 def updateProduct(request, update_id):
-    product_update = Product.objects.get(id=update_id)
-
-    data = {
-
-        'name': product_update.name,
-        'stock' : product_update.stock,
-        'pricePerDay': product_update.pricePerDay,
-        'sizeProduct': product_update.sizeProduct,
-        'description': product_update.description,
-    }
-
-    product_form = Productforms(request.POST or None, request.FILES or None, initial=data, instance=product_update)
     if request.method == 'POST':
-        if product_form.is_valid():
-            image_path = product_update.image.path
-            if os.path.exists(image_path):
-                os.remove(image_path)
-            product_form.save()
+        product = Product.objects.get(pk=update_id)
+        product.name = request.POST.get('productName')
+        product.stock = request.POST.get('productStock')
+        product.pricePerDay = request.POST.get('productPrice')
+        product.sizeProduct = request.POST.get('productSize')
+        product.description = request.POST.get('productDesc')
+
+        # Cek apakah gambar produk baru telah diunggah
+        if request.FILES.get('productImages'):
+            product.images = request.FILES['productImages']
+
+        product.save()
+
 
         return redirect('Admin:manage-product')
-    
-    context = {
-
-        'title':'update product',
-        'product_form':product_form,
-        'update':product_update 
-    }
-    
-    return render(request,'product/add_product.html', context)
+    else:
+        product = Product.objects.get(pk=update_id)
+        return render(request, 'product/update_product.html', {'product': product})
 
 def searchProduct(request):
     if request.method == 'POST':

@@ -1,0 +1,74 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('./../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #F3F4F3;
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+.container {
+    padding: 10px;
+    margin: 20px;
+}
+
+.container .box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 350px;
+    max-width: 600px;
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+    /* margin: 10px; */
+}
+
+.container .box .header {
+    background-color: #1B4242;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.container .box .content form {
+    padding: 10px 20px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-flow: column;
+}
+
+.container .box .content form .input {
+    margin-bottom: 50px;
+    display: grid;
+    margin-top: 30px;
+}
+
+.container .box .content form .input input {
+    margin-bottom: 20px;
+    border: solid 1px #5C8374;
+    border-radius: 5px;
+    /* font-size: large; */
+    padding: 10px;
+    font-family: "Poppins";
+}
+
+.container .box .content form .submit button {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    background-color: #5C8374;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: linear 100ms;
+}
+
+.container .box .content form .submit button:hover {
+    filter: brightness(70%);
+}

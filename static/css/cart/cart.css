@@ -1,0 +1,209 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin-top: 75px;
+}
+
+main {
+    margin-top: 75px;
+}
+
+.qty {
+    margin-left: -15px;
+}
+
+.checkout-button {
+    background-color: #ffb98f;
+    color: white;
+}
+
+.checkout-button:hover {
+    color: white;
+}
+
+.cart {
+    border-radius: 10px;
+}
+
+@media (max-width: 1398px) {
+    .col-3 img {
+        width: 60%;
+    }
+
+    .col-3 h4 {
+        font-size: 1rem;
+    }
+
+    .col-3 p {
+        font-size: 1rem;
+    }
+
+    .qty {
+        margin-left: -15px;
+    }
+
+    .total {
+        margin-left: 20px;
+    }
+
+    .qty button img {
+        width: 30px;
+    }
+
+    .remove button img {
+        width: 30%;
+    }
+
+    main {
+        margin-top: 75px;
+    }
+
+    .payment {
+        position: sticky;
+        /* position: fixed; */
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        /* Sesuaikan dengan kebutuhan */
+    }
+}
+
+@media (max-width: 1200px) {
+    .col-3 img {
+        width: 75%;
+    }
+
+    .col-3 h4 {
+        font-size: 1rem;
+    }
+
+    .col-3 p {
+        font-size: 1rem;
+    }
+
+    .qty {
+        margin-left: -15px;
+    }
+
+    .total {
+        margin-left: 20px;
+    }
+
+    .qty button img {
+        width: 30px;
+    }
+
+    .remove button img {
+        width: 30%;
+    }
+
+    main {
+        margin-top: 75px;
+    }
+
+    .payment {
+        position: sticky;
+        /* position: fixed; */
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        /* Sesuaikan dengan kebutuhan */
+    }
+}
+
+@media (max-width: 991px) {
+    .col-3 img {
+        width: 100%;
+    }
+
+    .col-3 h4 {
+        font-size: 1rem;
+    }
+
+    .col-3 p {
+        font-size: 1rem;
+    }
+
+    .qty {
+        margin-left: -15px;
+    }
+
+    .total {
+        margin-left: 20px;
+    }
+
+    .qty button img {
+        width: 25px;
+    }
+
+    .remove button img {
+        width: 40%;
+    }
+
+    main {
+        margin-top: 75px;
+    }
+
+    .payment {
+        position: sticky;
+        /* position: fixed; */
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        /* Sesuaikan dengan kebutuhan */
+    }
+}
+
+@media (max-width: 768px) {
+    .col-3 img {
+        width: 100%;
+    }
+
+    .col-3 h4 {
+        font-size: 0.6rem;
+    }
+
+    .col-3 p {
+        font-size: 0.6rem;
+    }
+
+    .qty {
+        margin-left: -15px;
+    }
+
+    .total {
+        margin-left: 20px;
+    }
+
+    .qty button img {
+        width: 15px;
+    }
+
+    .remove button img {
+        width: 100%;
+    }
+
+    main {
+        margin-top: 75px;
+    }
+
+    .payment {
+        position: sticky;
+        /* position: fixed; */
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+        /* Sesuaikan dengan kebutuhan */
+    }
+}

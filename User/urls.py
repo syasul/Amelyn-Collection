@@ -10,7 +10,7 @@ urlpatterns = [
     path('user/', views.userView, name='user'),
 
     # admin
-    path('admin/', views.adminView, name='admin'),
+    path('admin/', views.dashboardView, name='admin'),
     path('login-admin/', views.adminSignInView, name='adminSignIn'),
     
     # shared

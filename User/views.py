@@ -9,6 +9,12 @@ from User.models import AccountVerification, CustomUser as User
 from django.contrib import messages
 from services.email_service import EmailService
 
+
+
+from User.models import CustomUser
+from Product.models import Product
+from Order.models import Order, Testimonial
+
 # user handlers
 
 
@@ -104,6 +110,7 @@ def adminSignInView(request):
         if user is not None:
             if user.is_superuser:
                 # Autentikasi superuser
+                print('true')
                 login(request, user)
                 return redirect('User:admin')
             else:
@@ -114,8 +121,24 @@ def adminSignInView(request):
 
 
 @login_required
-def adminView(request):
-    return render(request, 'page/admin/admin.html')
+def dashboardView(request):
+    
+    userCount = CustomUser.objects.filter(is_superuser=False).count()
+    productCount = Product.objects.count()
+    orderCount = Order.objects.count()
+    
+    newProduct = Product.objects.all().order_by('-created_at')
+    newTestimonial = Testimonial.objects.all().order_by('-created_at')
+    
+    context = {
+        'userCount': userCount,
+        'productCount': productCount,
+        'orderCount': orderCount,
+        
+        'products': newProduct,
+        'testimonials': newTestimonial,
+    }
+    return render(request, 'page/admin/dashboard.html', context)
 
 
 @login_required

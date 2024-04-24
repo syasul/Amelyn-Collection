@@ -1,58 +1,107 @@
-{% extends '../base.html' %}
 {% load static %}
+<!doctype html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin | Return</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/order/manageReturnOrder.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
 
-{% block header %}
-    
-{% endblock header %}
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    </header>
+    <div class="l-navbar sidebar bg-white" id="nav-bar">
+      <nav class="nav">
+        <div>
+            <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="../../assets amelyn collection/logo (2).png" alt=""
+                    height="25px"><span class="nav_logo-name text-black">Amelyn Collection</span></a>
+            <div class="nav_list">
+                <a href="{% url 'User:admin' %}" class="nav_link">
+                    <i class='bx bx-grid-alt nav_icon'></i>
+                    <span class="nav_name">Dashboard</span> </a>
+                <a href="{% url 'Admin:manage-product' %}" class="nav_link"> <i class='bx bxs-t-shirt'></i> <span
+                        class="nav_name">Product</span>
+                </a>
+                <a href="{% url 'Admin:manage-order' %}" class="nav_link"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
+                <a href="{% url 'Admin:manage-return-order' %}" class="nav_link active rounded-end"> <i class='bx bx-timer'></i> <span class="nav_name">Product
+                        Return</span> </a>
+            </div>
+        </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
+                class="nav_name">Log Out</span> </a>
+    </nav>
+    </div>
 
-{% block content %}
-    <h1>manage return order</h1>
-    <div class="row">
-        <div class="col-md-12">
-          <table class="table">
+    <main>
+        <!--Container Main start-->
+        <h4><b>Product Return</b></h4>
+        <!-- Search and Add -->
+        <div class="mt-5">
+            <a href="" class="btn sort-btn">Sort <i class='bx bx-sort-down' ></i></a>
+        </div>
+
+        <!-- Data -->
+        <div class="mt-5 d-flex justify-content-around">
+          <table class="table table-striped">
             <thead>
-              <tr>
-                <th>ID Return Order</th>
-                <th>ID Order</th>
-                <th>Receipt Code</th>
-                <th>Image Path</th>
-                <th>Image Payment Fine</th>
-                <th>Status</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th>Action</th>
-              </tr>
+                <tr>
+                    <th class="text-center">ID Return Order</th>
+                    <th class="text-center">ID Order</th>
+                    <th class="text-center">Receipt Code</th>
+                    <th class="text-center">Image Path</th>
+                    <th class="text-center">Image Payment Fine</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Created at</th>
+                    <th class="text-center">Updated at</th>
+                    <th class="text-center">Action</th>
+                </tr>
             </thead>
             <tbody>
-              {% for returnOrder in returnOrders %}
-              <tr>
-                <td>{{ returnOrder.id_return_order }}</td>
-                <td>{{ returnOrder.id_order }}</td>
-                <td>{{ returnOrder.return_receipt_code }}</td>
-                <td>{{ returnOrder.image }}</td>
-                <td>{{ returnOrder.photo_payment_fine }}</td>
-                <td>
-                    <form action="{% url 'Admin:update-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
-                      {% csrf_token %}
-                      <select name="status" onchange="this.form.submit()">
-                        <option value="Sent" {% if returnOrder.status == 'Sent' %} selected {% endif %}>Sent</option>
-                        <option value="Received" {% if returnOrder.status == 'Received' %} selected {% endif %}>Received</option>
-                      </select>
-                    </form>
-                  </td>
-                <td>{{ returnOrder.created_at }}</td>
-                <td>{{ returnOrder.updated_at }}</td>
-                <td>
-                    <form action="{% url 'Admin:delete-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this data?')">Delete</button>
-                    </form>
-                </td>
-              </tr>
-              {% endfor %}
+                {% for returnOrder in returnOrders %}
+                <tr>
+                    <td class="text-center">{{ returnOrder.id_return_order }}</td>
+                    <td class="text-center">{{ returnOrder.id_order }}</td>
+                    <td class="text-center">{{ returnOrder.return_receipt_code }}</td>
+                    <td class="text-center">{{ returnOrder.image }}</td>
+                    <td class="text-center">{{ returnOrder.photo_payment_fine }}</td>
+                    <td class="text-center">
+                        <form action="{% url 'Admin:update-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
+                            {% csrf_token %}
+                            <select name="status" onchange="this.form.submit()" class="form-select shadow-none">
+                                <option value="Sent" {% if returnOrder.status == 'Sent' %} selected {% endif %}>Sent</option>
+                                <option value="Received" {% if returnOrder.status == 'Received' %} selected {% endif %}>Received</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td class="text-center">{{ returnOrder.created_at }}</td>
+                    <td class="text-center">{{ returnOrder.updated_at }}</td>
+                    <td class="text-center">
+                        <form action="{% url 'Admin:delete-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this data?')" class="btn btn-danger shadow-none">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
-          </table>
+        </table>
+        
+
         </div>
-      </div>
-{% endblock content %}
+        <!--Container Main end-->
+    </main>
+
+
+    <script src="{% static 'js/sideMenu.js' %}"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>

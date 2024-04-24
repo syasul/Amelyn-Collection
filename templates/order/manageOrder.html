@@ -1,59 +1,108 @@
-{% extends '../base.html' %}
 {% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Order</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+      <link rel="stylesheet" href="{% static 'css/order/manageOrder.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
 
+<body id="body-pd">
 
-{% block header %}
-    
-{% endblock header %}
+  <header class="header" id="header">
+      <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+  </header>
+  <div class="l-navbar sidebar bg-white" id="nav-bar">
+    <nav class="nav">
+      <div>
+          <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="../../assets amelyn collection/logo (2).png" alt=""
+                  height="25px"><span class="nav_logo-name text-black">Amelyn Collection</span></a>
+          <div class="nav_list">
+              <a href="{% url 'User:admin' %}" class="nav_link">
+                  <i class='bx bx-grid-alt nav_icon'></i>
+                  <span class="nav_name">Dashboard</span> </a>
+              <a href="{% url 'Admin:manage-product' %}" class="nav_link"> <i class='bx bxs-t-shirt'></i> <span
+                      class="nav_name">Product</span>
+              </a>
+              <a href="{% url 'Admin:manage-order' %}" class="nav_link active rounded-end"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
+              <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
+                      Return</span> </a>
+          </div>
+      </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
+              class="nav_name">Log Out</span> </a>
+  </nav>
+  </div>
 
-{% block content %}
-    <h1>manage order</h1>
-    <div class="row">
-        <div class="col-md-12">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ID Pesanan</th>
-                <th>ID User</th>
-                <th>Tanggal Mulai</th>
-                <th>Tanggal Selesai</th>
-                <th>Denda</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Alamat</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for order in orders %}
-              <tr>
-                <td>{{ order.id }}</td>
-                <td>{{ order.id_user }}</td>
-                <td>{{ order.start_date }}</td>
-                <td>{{ order.end_date }}</td>
-                <td>{{ order.fine }}</td>
-                <td>{{ order.grand_total }}</td>
-                <td>
-                  <form action="{% url 'Admin:update_status' id_order=order.id %}" method="POST">
-                    {% csrf_token %}
-                    <select name="status" onchange="this.form.submit()">
-                      <option value="Unconfirm" {% if order.status == 'Unconfirm' %} selected {% endif %}>Unconfirm</option>
-                      <option value="Confirm" {% if order.status == 'Confirm' %} selected {% endif %}>Confirm</option>
-                      <option value="Delivered" {% if order.status == 'Delivered' %} selected {% endif %}>Delivered</option>
-                    </select>
-                  </form>
-                </td>
-                <td>{{ order.address }}</td>
-                <td>
-                    <form action="{% url 'Admin:delete_order' id_order=order.id %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
-                    </form>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+  <main>
+      <!--Container Main start-->
+      <h4><b>Manage Order</b></h4>
+      <!-- Search and Add -->
+      <div class="mt-5">
+          <a href="" class="btn sort-btn">Sort <i class='bx bx-sort-down' ></i></a>
       </div>
-{% endblock content %}
+
+      <!-- Data -->
+      <div class="mt-5 d-flex justify-content-around">
+      <table class="table mt-4 table-striped">
+        <thead>
+          <tr>
+            <th class="text-center">ID Pesanan</th>
+            <th class="text-center">ID User</th>
+            <th class="text-center">Tanggal Mulai</th>
+            <th class="text-center">Tanggal Selesai</th>
+            <th class="text-center">Denda</th>
+            <th class="text-center">Total</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Alamat</th>
+            <th class="text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td class="text-center">{{ order.id }}</td>
+            <td class="text-center">{{ order.id_user }}</td>
+            <td class="text-center">{{ order.start_date }}</td>
+            <td class="text-center">{{ order.end_date }}</td>
+            <td class="text-center">{{ order.fine }}</td>
+            <td class="text-center">{{ order.grand_total }}</td>
+            <td class="text-center">
+              <form action="{% url 'Admin:update_status' id_order=order.id %}" method="POST">
+                {% csrf_token %}
+                <select class="form-select shadow-none" name="status" onchange="this.form.submit()">
+                  <option value="Unconfirm" {% if order.status == 'Unconfirm' %} selected {% endif %}>Unconfirm</option>
+                  <option value="Confirm" {% if order.status == 'Confirm' %} selected {% endif %}>Confirm</option>
+                  <option value="Delivered" {% if order.status == 'Delivered' %} selected {% endif %}>Delivered</option>
+                </select>
+              </form>
+            </td>
+            <td class="text-center">{{ order.address }}</td>
+            <td class="text-center">
+                <form action="{% url 'Admin:delete_order' id_order=order.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
+                </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+      <!--Container Main end-->
+  </main>
+
+
+  <script src="{% static 'js/sideMenu.js' %}"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>
+
+

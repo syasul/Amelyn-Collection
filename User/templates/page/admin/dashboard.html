@@ -1,0 +1,149 @@
+{% load static %}
+{% load humanize %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+</head>
+
+<body id="body-pd">
+
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+    </header>
+    <div class="l-navbar sidebar bg-white" id="nav-bar">
+        <nav class="nav">
+            <div>
+                <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="../../assets amelyn collection/logo (2).png" alt=""
+                        height="25px"><span class="nav_logo-name text-black">Amelyn Collection</span></a>
+                <div class="nav_list">
+                    <a href="{% url 'User:admin' %}" class="nav_link active rounded-end">
+                        <i class='bx bx-grid-alt nav_icon'></i>
+                        <span class="nav_name">Dashboard</span> </a>
+                    <a href="{% url 'Admin:manage-product' %}" class="nav_link"> <i class='bx bxs-t-shirt'></i> <span
+                            class="nav_name">Product</span>
+                    </a>
+                    <a href="{% url 'Admin:manage-order' %}" class="nav_link"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
+                    <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
+                            Return</span> </a>
+                </div>
+            </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
+                    class="nav_name">Log Out</span> </a>
+        </nav>
+    </div>
+
+    <main>
+        <!--Container Main start-->
+        <h4><b>Dashboard</b></h4>
+        <!-- Counting Data Visualization -->
+        <div class="d-flex mt-5 justify-content-around">
+            <div class="datavis rounded-3">
+                <div class="row">
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <img src="{% static 'img/people-purple.png' %}" width="35px" alt="">
+                    </div>
+                    <div class="col-md-10">
+                        <h5><b>{{ userCount }}</b></h5>
+                        <h5>Total Users</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="datavis rounded-3">
+                <div class="row">
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <img src="{% static 'img/clothes-blue.png' %}" width="35px" alt="">
+                    </div>
+                    <div class="col-md-10">
+                        <h5><b>{{ productCount }}</b></h5>
+                        <h5>Total Products</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="datavis rounded-3">
+                <div class="row">
+                    <div class="col-md-2 d-flex justify-content-center align-items-center">
+                        <img src="{% static 'img/hand-box-yellow.png' %}" width="35px" alt="">
+                    </div>
+                    <div class="col-md-10">
+                        <h5><b>{{ orderCount }}</b></h5>
+                        <h5>Total Orders</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data -->
+        <div class="d-flex mt-3">
+            <div class="product rounded-3">
+                <h5><b>New Products</b></h5>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Image Product</th>
+                        <th class="text-center">Name Product</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Size Product</th>
+                        <th class="text-center">Price Product</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for product in products %}
+                      <tr>
+                        <td class="text-center">{{ product.image }}</td>
+                        <td class="text-center">{{ product.name }}</td>
+                        <td class="text-center">{{ product.description }}</td>
+                        <td class="text-center">
+                            {% if product.pricePerDay %}
+                                Rp{{ product.pricePerDay|floatformat:"-2"|default:"0"|replace:",","." }}
+                            {% else %}
+                                Rp0
+                            {% endif %}
+                        </td>
+                        <td class="text-center">{{ product.pricePerDay }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+            <div class="testimoni rounded-3">
+                <h5><b>Testimoni</b></h5>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Testimonial</th>
+                        <th class="text-center">Create At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for testimonial in testimonials %}
+                      <tr>
+                        <td class="text-center">{{ testimonial.id_user }}</td>
+                        <td class="text-center">{{ testimonial.content }}</td>
+                        <td class="text-center">{{ testimonial.created_at }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <!--Container Main end-->
+    </main>
+
+
+    <script src="{% static 'js/sideMenu.js' %}"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>
