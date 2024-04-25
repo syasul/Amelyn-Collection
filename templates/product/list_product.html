@@ -14,7 +14,7 @@
       <div class="container mb-3 fixed-top bg-white">
         <nav class="navbar navbar-expand-lg navbar-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'User:user' %}">
               <img src="{% static 'img/logo.png' %}" alt="" width="30">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -25,10 +25,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  <a class="nav-link active" aria-current="page" href="{% url 'User:user' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Product</a>
+                  <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -36,14 +36,13 @@
                     Hi, User
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Hi, User</a></li>
-                    <li><a class="dropdown-item" href="#">My Order</a></li>
-                    <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
+                    <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
                   </ul>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}"><img
-                      src="{% static 'img/chart-black.png' %}" alt=""></a>
+                      src="{% static 'img/chart-black.png' %}" alt="" style="width:18px;"></a>
                 </li>
               </ul>
             </div>
@@ -51,8 +50,9 @@
         </nav>
       </div>
     </header>
-
+    
   <main>
+    {% include 'widgets/flasher.html' %}
       <div class="container">
           <!-- search form -->
           <div class="col-md-3 ms-auto mb-3">
@@ -61,31 +61,31 @@
               </form>
           </div>
 
-          <div class="row justify-content-around">
+          <div class="row justify-content-start">
             {% for product in products  %}  
               <!-- card -->
-              <div class="card mb-3 shadow-sm" style="width: 20rem;">
+              <div class="card mb-3 shadow-sm" style="width: 18rem; margin: 0 6px">
                   <img src="{{product.image}}" class="card-img-top mt-3"
                       alt="...">
                   <div class="card-body">
                       <h5 class="card-title">{{product.name}}</h5>
-                      <p><b>Rp{{product.pricePerDay}}</b></p>
+                      <p><b>Rp {{product.pricePerDay}}</b></p>
                       <p class="card-text">{{product.stock}}</p>
 
                       <div class="row">
-                          <div class="col-6">
+                          <div class="col">
                               {% comment %} <a href="#" class="btn bt-sm cart-button">Add to Cart</a> {% endcomment %}
                               {% if product.stock != 0 %}
                               <form method="post" action="{% url 'Cart:add_to_cart' product_id=product.id %}">
                                 {% csrf_token %}
-                                <button class="btn bt-sm cart-button" type="submit">Add to Cart</button>
+                                <button class="btn bt-sm cart-button w-100" type="submit">Add to Cart</button>
                               </form>
                             {% else %}
-                              <button class="btn bt-sm cart-button disabled" type="submit">Add to Cart</button>
+                              <button class="btn bt-sm cart-button disabled w-100" type="submit">Add to Cart</button>
                             {% endif %}
                           </div>
-                          <div class="col-6">
-                              <a href="{% url 'Product:detail-product' detail_id=product.id %}" class="btn description-button">Detail</a>
+                          <div class="col">
+                              <a href="{% url 'Product:detail-product' detail_id=product.id %}" class="btn description-button w-100">Detail</a>
                           </div>
                       </div>
                   </div>

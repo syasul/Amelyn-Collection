@@ -1,5 +1,4 @@
 {% load static %}
-{% load humanize %}
 
 <!doctype html>
 <html lang="en">
@@ -22,7 +21,7 @@
     <div class="l-navbar sidebar bg-white" id="nav-bar">
         <nav class="nav">
             <div>
-                <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="../../assets amelyn collection/logo (2).png" alt=""
+                <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="{% static 'img/logo.png' %}" alt=""
                         height="25px"><span class="nav_logo-name text-black">Amelyn Collection</span></a>
                 <div class="nav_list">
                     <a href="{% url 'User:admin' %}" class="nav_link active rounded-end">
@@ -100,13 +99,7 @@
                         <td class="text-center">{{ product.image }}</td>
                         <td class="text-center">{{ product.name }}</td>
                         <td class="text-center">{{ product.description }}</td>
-                        <td class="text-center">
-                            {% if product.pricePerDay %}
-                                Rp{{ product.pricePerDay|floatformat:"-2"|default:"0"|replace:",","." }}
-                            {% else %}
-                                Rp0
-                            {% endif %}
-                        </td>
+                        <td class="text-center">{{ product.pricePerDay }}</td>
                         <td class="text-center">{{ product.pricePerDay }}</td>
                       </tr>
                       {% endfor %}
