@@ -58,7 +58,7 @@ def userSignUpView(request):
             request, 'Account created successfully. Please check your email to activate your account.')
         return redirect('User:userSignUp')
 
-    return render(request, 'page/user/user_signup.html')
+    return render(request, 'user/user_signup.html')
 
 
 def accountActivationView(request, token):
@@ -91,12 +91,12 @@ def userSignInView(request):
         else:
             messages.error(request, 'Invalid email or password')
             return redirect('User:userSignIn')
-    return render(request, 'page/user/user_signin.html')
+    return render(request, 'user/user_signin.html')
 
 
 
 def userView(request):
-    return render(request, 'page/user/user.html')
+    return render(request, 'user/user.html')
 
 # admin handlers
 
@@ -117,7 +117,7 @@ def adminSignInView(request):
                messages.error(request, 'Invalid email or password')
        
             
-    return render(request, 'page/admin/admin_signin.html')
+    return render(request, 'admin/admin_signin.html')
 
 
 @login_required
@@ -140,10 +140,10 @@ def dashboardView(request):
         'products': newProduct,
         'testimonials': newTestimonial,
     }
-    return render(request, 'page/admin/dashboard.html', context)
+    return render(request, 'admin/dashboard.html', context)
 
 
 @login_required
 def logoutView(request):
     logout(request)
-    return redirect('User:userSignIn')
+    return redirect('User:user')
