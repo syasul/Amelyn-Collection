@@ -8,9 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/product/manage_product.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="{% static 'css/fontawesome/all.min.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'js/all.min.js' %}"></script>
 </head>
 <body id="body-pd">
-    <header class="header" id="header">
+    <header class="header bg-light" id="header">
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
@@ -30,6 +32,7 @@
                     <a href="{% url 'Admin:manage-order' %}" class="nav_link"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
                     <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
                             Return</span> </a>
+                            <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
                 </div>
             </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
                     class="nav_name">Log Out</span> </a>
@@ -39,13 +42,14 @@
         <h4><b>Product</b></h4>
         <!-- Search and Add -->
         <div class="d-flex mt-5 justify-content-between">
-            <form class="d-flex" role="search">
-                <input class="form-control shadow-none me-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex" action="{% url 'Admin:manage-product' %}" method="GET">
+                <input class="form-control shadow-none me-2" type="search" placeholder="Search" aria-label="Search" name="q" value="{{ request.GET.q }}">
+                <button class="btn btn-primary" type="submit"><i class="fa-solid fa-search"></i></button>
             </form>
-            <button type="button" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product</button>
+            <button type="button" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#addProductModal"><i class="fa-solid fa-plus"></i>     Add Product</button>
         </div>
         <!-- Data -->
-        <div class="mt-5 d-flex justify-content-around">
+        <div class="mt-2 d-flex justify-content-around">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -58,7 +62,7 @@
               <th class="text-center" scope="col">desc</th>
               <th class="text-center" scope="col">dibuat</th>
               <th class="text-center" scope="col">di update</th>
-              <th class="text-center" scope="col"></th>
+              <th class="text-center" scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -67,15 +71,15 @@
                 <th scope="row">{{product.id}}</th>
                 <td class="text-center">{{product.name}}</td>
                 <td class="text-center">{{product.stock}}</td>
-                <td class="text-center">{{product.images}}</td>
+                <td class="text-center"><img src="{{ product.images.url }}" alt="Product Image" style="max-width: 100px;"></td>
                 <td class="text-center">{{product.pricePerDay}}</td>
                 <td class="text-center">{{product.sizeProduct}}</td>
                 <td class="text-center">{{product.description}}</td>
                 <td class="text-center">{{product.created_at}}</td>
                 <td class="text-center">{{product.updated_at}}</td>
                 <td class="text-center">
-                    <a type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateProductModal{{ product.id }}">update</a>
-                    <a href="{% url 'Admin:delete-product' delete_id=product.id %}" class="btn btn-danger btn-sm ml-2">delete</a>
+                    <a type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateProductModal{{ product.id }}"><i class="fa-regular fa-pen-to-square text-white"></i></a>
+                    <a href="{% url 'Admin:delete-product' delete_id=product.id %}" class="btn btn-danger btn-sm ml-2"> <i class="fa-regular fa-trash-can"></i></a>
                 </td>
           {% endfor %}
         </tbody>
@@ -86,16 +90,16 @@
 
     <!-- Add Product Modal -->
 
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="modal modal-fullscreen fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-white">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Add form for new product -->
-                    <form action="{% url 'Admin:add-product' %}" method="POST">
+                    <form action="{% url 'Admin:add-product' %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="productName" class="form-label">Product Name</label>
@@ -107,7 +111,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="productImages" class="form-label">Image</label>
-                            <input type="file" class="form-control shadow-none" id="productImages" name="productImages" required>
+                            <input type="file" class="form-control shadow-none" id="productImages" name="productImages" accept="upload/images/*" required>
                         </div>
                         <div class="mb-3">
                             <label for="productPrice" class="form-label">Price per Day</label>
@@ -138,58 +142,66 @@
 
     <!-- Update Product Modals -->
     {% for product in products %}
-<div class="modal fade" id="updateProductModal{{ product.id }}" tabindex="-1" aria-labelledby="updateProductModal{{ product.id }}Label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateProductModal{{ product.id }}Label">Update Product</h5>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="updateProductModal{{ product.id }}" tabindex="-1" aria-labelledby="updateProductModal{{ product.id }}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateProductModal{{ product.id }}Label">Update Product</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateForm{{ product.id }}" action="{% url 'Admin:update-product' product.id %}" method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Product Name</label>
+                            <input type="text" class="form-control shadow-none" id="productName" name="productName" value="{{ product.name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productStock" class="form-label">Stock</label>
+                            <input type="number" class="form-control shadow-none" id="productStock" name="productStock" value="{{ product.stock }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productImages" class="form-label">Current Image</label><br>
+                            <img src="{{ product.images.url }}" alt="Product Image" style="max-width: 100px;">
+                        </div>
+                        <div class="mb-3">
+                            <label for="productNewImage" class="form-label">New Image (Optional)</label>
+                            <input type="file" class="form-control shadow-none" id="productNewImage" name="productNewImage">
+                        </div>
+                        <div class="mb-3">
+                            <label for="productPrice" class="form-label">Price per Day</label>
+                            <input type="number" class="form-control shadow-none" id="productPrice" name="productPrice" value="{{ product.pricePerDay }}" required>
+                        </div>
+                        <!-- Add other fields as needed -->
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                <form action="{% url 'Admin:update-product' product.id %}" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="productName" class="form-label">Product Name</label>
-                        <input type="text" class="form-control shadow-none" id="productName" name="productName" value="{{ product.name }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productStock" class="form-label">Stock</label>
-                        <input type="number" class="form-control shadow-none" id="productStock" name="productStock" value="{{ product.stock }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productImages" class="form-label">Image</label>
-                        <input type="file" class="form-control shadow-none" id="productImages" name="productImages" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productPrice" class="form-label">Price per Day</label>
-                        <input type="number" class="form-control shadow-none" id="productPrice" name="productPrice" value="{{ product.pricePerDay }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productSize" class="form-label">Size</label>
-                        <select class="form-select shadow-none" id="productSize" name="productSize" required>
-                            <option value="">Pilih ukuran</option>
-                            <option value="S" {% if product.sizeProduct == "S" %} selected {% endif %}>S</option>
-                            <option value="M" {% if product.sizeProduct == "M" %} selected {% endif %}>M</option>
-                            <option value="L" {% if product.sizeProduct == "L" %} selected {% endif %}>L</option>
-                            <option value="XL" {% if product.sizeProduct == "XL" %} selected {% endif %}>XL</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="productDesc" class="form-label">Description</label>
-                        <textarea class="form-control shadow-none" id="productDesc" name="productDesc" rows="3" required>{{ product.description }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </form>
-            </div>
-           
         </div>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
 
     
+<script>
 
-    <script src="{% static 'js/sideMenu.js.js' %}"></script>
+    {% for product in products %}
+    $('#updateForm{{ product.id }}').submit(function(e) {
+        e.preventDefault();
+
+        var newImage = $('#productNewImage').prop('files')[0];
+
+        if (newImage) {
+            this.submit();
+        } else {
+            
+            $('#productNewImage').remove();
+            this.submit();
+        }
+    });
+    {% endfor %}
+</script>
+    <script src="{% static 'js/sideMenu.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>

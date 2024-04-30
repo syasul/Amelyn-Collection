@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'Product',
     'Order',
     'Cart',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [

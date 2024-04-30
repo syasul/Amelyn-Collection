@@ -154,14 +154,14 @@ a {
 
 .sort-btn {
     background-color: transparent;
-    color: #1b4242;
-    border: 2px solid #1b4242;
+    color: #252525;
+    border: 2px solid #252525;
 }
 
 .sort-btn:hover {
     background-color: transparent;
-    color: #1b4242;
-    border: 2px solid #1b4242;
+    color: #252525;
+    border: 2px solid #252525;
 }
 
 @media screen and (min-width: 768px) {

@@ -9,11 +9,13 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
       <link rel="stylesheet" href="{% static 'css/order/manageOrder.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  <link href="{% static 'css/fontawesome/all.min.css' %}" rel="stylesheet" type="text/css">
+  <script src="{% static 'js/all.min.js' %}"></script>
 </head>
 
 <body id="body-pd">
 
-  <header class="header" id="header">
+  <header class="header bg-light" id="header">
       <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
   </header>
   <div class="l-navbar sidebar bg-white" id="nav-bar">
@@ -31,6 +33,7 @@
               <a href="{% url 'Admin:manage-order' %}" class="nav_link active rounded-end"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
               <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
                       Return</span> </a>
+                      <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
           </div>
       </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
               class="nav_name">Log Out</span> </a>
@@ -42,12 +45,12 @@
       <h4><b>Manage Order</b></h4>
       <!-- Search and Add -->
       <div class="mt-5">
-          <a href="" class="btn sort-btn">Sort <i class='bx bx-sort-down' ></i></a>
+        <a href="{% url 'Admin:manage-order' %}?sort={% if sort == 'desc' %}asc{% else %}desc{% endif %}" class="btn sort-btn">Sort <i class='bx bx-sort'></i></a>
       </div>
 
       <!-- Data -->
-      <div class="mt-5 d-flex justify-content-around">
-      <table class="table mt-4 table-striped">
+      <div class="mt-2 d-flex justify-content-around">
+      <table class="table  table-striped">
         <thead>
           <tr>
             <th class="text-center">ID Pesanan</th>
@@ -58,7 +61,7 @@
             <th class="text-center">Total</th>
             <th class="text-center">Status</th>
             <th class="text-center">Alamat</th>
-            <th class="text-center">Aksi</th>
+            <th class="text-center">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -84,7 +87,7 @@
             <td class="text-center">
                 <form action="{% url 'Admin:delete_order' id_order=order.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?')">Delete</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?')"><i class="fa-regular fa-trash-can"></i></button>
                 </form>
             </td>
           </tr>

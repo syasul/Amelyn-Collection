@@ -12,6 +12,8 @@ from User.models import CustomUser as User
 from .models import CartItem, Cart
 from Product.models import Product
 
+from .utils import currency
+
 @login_required
 def cart(request):
     current_user: User = request.user
@@ -22,14 +24,18 @@ def cart(request):
     cart, created = Cart.objects.get_or_create(id_user=current_user)
     
     total_harga = CartItem.objects.filter(id_cart=cart).aggregate(total=Sum('subtotal'))['total'] or 0
-    print("Total harga:", total_harga) 
+    total_harga = currency(total_harga)
     
     cart_items = CartItem.objects.filter(id_cart=cart)
+    for cart_item in cart_items:
+        cart_item.id_product.pricePerDay = currency(cart_item.id_product.pricePerDay)
+        cart_item.subtotal = currency(cart_item.subtotal)
     
     context = {
         'cart': cart,
         'cart_items': cart_items,
-        'total_harga': total_harga
+        'total_harga': total_harga,
+        'current_user': current_user
     }
     
     return render(request, 'cart/cart.html', context)

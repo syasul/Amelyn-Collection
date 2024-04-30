@@ -4,6 +4,11 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import os
 
+# currency format
+from .utils import currency
+
+from django.db.models import Q
+
 
 # Product
 from Product.models import *
@@ -11,22 +16,32 @@ from Product.models import *
 # Order
 from Order.models import *
 
+
 @login_required
 def manageProduct(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
+    query = request.GET.get('q')
+
+    products = Product.objects.all()
+    for product in products:
+        product.pricePerDay = currency(product.pricePerDay)
+
+
+    if query:
+        products = products.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
     context = {
-        # 'product_form':product_form,
-        'title':'manage product',
-        'products': Product.objects.all()
+        'products': products,
+        'title': 'list product'
     }
     return render(request, 'product/manage_product.html', context)
 
 @login_required
 def addProduct(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         product_name = request.POST.get('productName')
@@ -47,12 +62,12 @@ def addProduct(request):
 
         return redirect('Admin:manage-product')    
     return redirect('Admin:manage-product')
-    
+
 
 @login_required
 def deleteProduct(request, delete_id):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     product = Product.objects.get(id=delete_id)
     os.remove(product.image.path)
@@ -63,7 +78,7 @@ def deleteProduct(request, delete_id):
 @login_required
 def updateProduct(request, update_id):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         product = Product.objects.get(pk=update_id)
@@ -88,7 +103,7 @@ def updateProduct(request, update_id):
 @login_required
 def searchProduct(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         searched = request.POST.get('searched', '')
@@ -108,18 +123,29 @@ def searchProduct(request):
 @login_required
 def manageOrder(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
-    orders = Order.objects.all()
+    sort = request.GET.get('sort', 'desc')  # Mendapatkan parameter sort dari URL
+
+    if sort == 'desc':
+        orders = Order.objects.all().order_by('-updated_at')
+    else:
+        orders = Order.objects.all().order_by('updated_at')
+    
+    for order in orders:
+        order.grand_total = currency(order.grand_total)
+        order.fine = currency(order.fine)
+    
     context = {
-        'orders': orders
+        'orders': orders,
+        'sort': sort
     }
     return render(request, 'order/manageOrder.html', context)
 
 @login_required
 def update_status(request, id_order):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         status = request.POST.get('status')
@@ -131,7 +157,7 @@ def update_status(request, id_order):
 @login_required
 def delete_order(request, id_order):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         order = Order.objects.get(pk=id_order)
@@ -141,18 +167,26 @@ def delete_order(request, id_order):
 @login_required
 def manageReturnOrder(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
-    returnOrder = ReturnOrder.objects.all()
+    sort = request.GET.get('sort', 'desc')  # Mendapatkan parameter sort dari URL
+
+    if sort == 'desc':
+        returnOrders = ReturnOrder.objects.all().order_by('-updated_at')
+    else:
+        returnOrders = ReturnOrder.objects.all().order_by('updated_at')
+
     context = {
-        'returnOrders':returnOrder
+        'returnOrders': returnOrders,
+        'sort': sort,
     }
+    
     return render(request, 'order/manageReturnOrder.html',context)
 
 @login_required
 def updateReturnOrder(request, id_return_order):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         status = request.POST.get('status')
@@ -164,7 +198,7 @@ def updateReturnOrder(request, id_return_order):
 @login_required
 def deleteReturnOrder(request, id_return_order):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         returnOrder = ReturnOrder.objects.get(id_return_order=id_return_order)
@@ -174,18 +208,25 @@ def deleteReturnOrder(request, id_return_order):
 @login_required
 def manageTestimonial(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
-    testimonial = Testimonial.objects.all()
+    sort = request.GET.get('sort', 'desc')  # Mendapatkan parameter sort dari URL
+
+    if sort == 'desc':
+        testimonial = Testimonial.objects.all().order_by('-updated_at')
+    else:
+        testimonial = Testimonial.objects.all().order_by('updated_at')
+        
     context = {
-        'testimonials':testimonial
+        'testimonials':testimonial,
+        'sort': sort
     }
     return render(request, 'order/manageTestimonial.html',context)
 
 @login_required
 def deleteTesimonial(request, id_testimonial):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect("home")
     
     if request.method == 'POST':
         testimonial = Testimonial.objects.get(id_testimonial=id_testimonial)

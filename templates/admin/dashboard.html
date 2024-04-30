@@ -11,11 +11,13 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'css/admin/dashboard.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="{% static 'css/fontawesome/all.min.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'js/all.min.js' %}"></script>
 </head>
 
 <body id="body-pd">
 
-    <header class="header" id="header">
+    <header class="header bg-light" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
     </header>
     <div class="l-navbar sidebar bg-white" id="nav-bar">
@@ -33,6 +35,7 @@
                     <a href="{% url 'Admin:manage-order' %}" class="nav_link"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
                     <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
                             Return</span> </a>
+                    <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
                 </div>
             </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
                     class="nav_name">Log Out</span> </a>
@@ -43,7 +46,7 @@
         <!--Container Main start-->
         <h4><b>Dashboard</b></h4>
         <!-- Counting Data Visualization -->
-        <div class="d-flex mt-5 justify-content-around">
+        <div class="d-flex mt-2 justify-content-around">
             <div class="datavis rounded-3">
                 <div class="row">
                     <div class="col-md-2 d-flex justify-content-center align-items-center">

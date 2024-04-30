@@ -7,21 +7,13 @@
     
 {% endblock header %}
 {% block content %}
-{% comment %} <div class="container">
-    <h1>page User</h1>
-    <a href="{% url 'User:logout' %}">LogOut</a>
-</div> {% endcomment %}
 
 <header>
   <!-- navbar -->
-  <div class="container mb-3 fixed-top bg-white">
-    {% if user.authenticated %}
-    
-    {% else %}
-    {% endif %}
+  <div class="container mb-3 fixed-top bg-white"> 
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid ">
-        <a class="navbar-brand" href="{% url 'User:user' %}">
+        <a class="navbar-brand" href="{% url 'home' %}">
           <img src="{% static 'img/logo.png' %}" alt="" width="30">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -29,10 +21,10 @@
           aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse  " id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'User:user' %}">Home</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
@@ -41,25 +33,26 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                Hi, User
+                Hi, {{current_user}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
                 <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
               </ul>
             </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}">
+                <i class="fa-solid fa-cart-shopping"></i>
+              </a>
+            </li>
             {% else %}
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'User:userSignIn' %}">
-                <button class="btn btn-outline-primary">Login</button>
+                <button class="btn btn-login">Login</button>
               </a>
             </li>
             {% endif %}
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}">
-                <img src="{% static 'img/chart-black.png' %}" alt="" style="width:18px;">
-              </a>
-            </li>
+            
           </ul>
         </div>
       </div>
@@ -77,7 +70,7 @@
         <h5 class="mt-3"><b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae iure eius aperiam dolor, similique quis,
           voluptates porro tenetur exercitationem voluptas cupiditate facere, quae corporis! Unde nisi aut repellat ab
           quasi!</b></h5>
-        <a href="#" class="btn btn-reserved rounded-3 mt-3">Reserved Now</a>
+        <a href="{% url 'Product:list-product' %}" class="btn btn-reserved rounded-3 mt-3 fw-bold">Reserved Now</a>
       </div>
 
 
@@ -100,127 +93,57 @@
       <!-- New Product -->
       <h3 class="fw-bold mt-5">New Products</h3>
       <hr class="line rounded-4">
-      <div class="row justify-content-around">
-        <!-- card -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Clothes 1</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-              the card's content.</p>
-            <p><b>Rp. 200.000,-/day</b></p>
-            <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
-              </div>
-              <div class="col-6">
-                <a href="#" class="btn bt-sm description-button">Description</a>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="row justify-content-start">
+        {% for product in products  %}  
+              <!-- card -->
+              <div class="card mb-3 shadow-sm" style="width: 18rem; margin: 0 5px">
+                  <img src="{{product.image}}" class="card-img-top mt-3"
+                      alt="...">
+                  <div class="card-body">
+                      <h5 class="card-title">{{product.name}}</h5>
+                      <p><b>{{product.pricePerDay}}</b></p>
+                      <p class="card-text">{{product.stock}}</p>
 
-        <!-- card -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Clothes 1</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-              the card's content.</p>
-            <p><b>Rp. 200.000,-/day</b></p>
-            <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
+                      <div class="row">
+                          <div class="col">
+                              {% comment %} <a href="#" class="btn bt-sm cart-button">Add to Cart</a> {% endcomment %}
+                              {% if product.stock != 0 %}
+                              <form method="post" action="{% url 'Cart:add_to_cart' product_id=product.id %}">
+                                {% csrf_token %}
+                                <button class="btn bt-sm cart-button w-100" type="submit">Add to Cart</button>
+                              </form>
+                            {% else %}
+                              <button class="btn bt-sm cart-button disabled w-100" type="submit">Add to Cart</button>
+                            {% endif %}
+                          </div>
+                          <div class="col">
+                              <a href="{% url 'Product:detail-product' detail_id=product.id %}" class="btn description-button w-100">Detail</a>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div class="col-6">
-                <a href="#" class="btn bt-sm description-button">Description</a>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- card -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Clothes 1</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-              the card's content.</p>
-            <p><b>Rp. 200.000,-/day</b></p>
-            <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
-              </div>
-              <div class="col-6">
-                <a href="#" class="btn bt-sm description-button">Description</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- card -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <img src="{% static 'img/registerImage.png' %}" class="card-img-top mt-3" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Clothes 1</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-              the card's content.</p>
-            <p><b>Rp. 200.000,-/day</b></p>
-            <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn bt-sm cart-button">Add to Cart</a>
-              </div>
-              <div class="col-6">
-                <a href="#" class="btn bt-sm description-button">Description</a>
-              </div>
-            </div>
-          </div>
-        </div>
+          {% endfor %}
       </div>
 
       <!-- Testimoni -->
       <h3 class="fw-bold mt-5">Testimoni</h3>
       <hr class="line rounded-4">
-      <div class="row justify-content-around text-center">
-        <!-- testi -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <div class="card-body">
-            <h5 class="card-title">User's</h5>
-            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
-              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
-              reiciendis nulla ipsum nisi assumenda!</p>
-          </div>
-        </div>
+      <div class="row justify-content-start text-center">
 
-        <!-- testi -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
+        
+        {% for testi in testimonials %}
+        <div class="card mb-3 shadow-sm" style="width: 15rem; margin: 0px 3px;">
           <div class="card-body">
-            <h5 class="card-title">User's</h5>
-            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
-              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
-              reiciendis nulla ipsum nisi assumenda!</p>
+            <h5 class="card-title">{{testi.id_user}}</h5>
+            <p class="card-text">{{testi.content}}</p>
           </div>
         </div>
+        {% endfor %}
+          
+        <!-- testi -->
+        
 
-        <!-- testi -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <div class="card-body">
-            <h5 class="card-title">User's</h5>
-            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
-              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
-              reiciendis nulla ipsum nisi assumenda!</p>
-          </div>
-        </div>
-
-        <!-- testi -->
-        <div class="card mb-3 shadow-sm" style="width: 20rem;">
-          <div class="card-body">
-            <h5 class="card-title">User's</h5>
-            <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti incidunt vero at,
-              excepturi error libero placeat dicta omnis facere, nemo sit? Perferendis excepturi aliquam quibusdam
-              reiciendis nulla ipsum nisi assumenda!</p>
-          </div>
-        </div>
     </div>
   </main>
 

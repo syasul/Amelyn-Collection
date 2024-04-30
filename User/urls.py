@@ -7,7 +7,6 @@ urlpatterns = [
     path('signup/', views.userSignUpView, name="userSignUp"),
     path('activate/<str:token>/', views.accountActivationView, name='activate'),
     path('signin/', views.userSignInView, name='userSignIn'),
-    path('user/', views.userView, name='user'),
 
     # admin
     path('admin/', views.dashboardView, name='admin'),

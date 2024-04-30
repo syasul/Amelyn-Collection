@@ -8,54 +8,13 @@
 {% endblock header %}
 
 {% block content %}
-    {% comment %} <h1>Form CheckOut</h1> {% endcomment %}
-    {% comment %} <form method="POST">
-        {% csrf_token %}
-        <div class="row mb-3">
-          <div class="col">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" class="form-control shadow-none" id="firstName" name="firstName" placeholder="Enter First Name">
-          </div>
-          <div class="col">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control shadow-none" id="lastName" name="lastName" placeholder="Enter Last Name">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" value="{{ user_email }}" placeholder="Enter Email" disabled>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
-            <label for="checkIn" class="form-label">Check In</label>
-            <input type="date" class="form-control shadow-none" id="checkIn" name="checkIn">
-          </div>
-          <div class="col">
-            <label for="checkOut" class="form-label">Check Out</label>
-            <input type="date" class="form-control shadow-none" id="checkOut" name="checkOut">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="telephone" class="form-label">Telephone</label>
-          <input type="tel" class="form-control shadow-none" id="telephone" name="telephone" placeholder="Enter Telephone Number">
-        </div>
-        <div class="mb-3">
-          <label for="address" class="form-label">Address</label>
-          <textarea class="form-control shadow-none" id="address" name="address" rows="3" placeholder="Enter Address"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form> {% endcomment %}
 
       <header>
         <!-- navbar -->
-        <div class="container mb-3 fixed-top bg-white">
-          {% if user.authenticated %}
-          
-          {% else %}
-          {% endif %}
+        <div class="container mb-3 fixed-top bg-white"> 
           <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid ">
-              <a class="navbar-brand" href="{% url 'User:user' %}">
+              <a class="navbar-brand" href="{% url 'home' %}">
                 <img src="{% static 'img/logo.png' %}" alt="" width="30">
               </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -66,7 +25,7 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'User:user' %}">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
@@ -75,25 +34,26 @@
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                       aria-expanded="false">
-                      Hi, User
+                      Hi, {{current_user}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
                       <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
                     </ul>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}">
+                      <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                  </li>
                   {% else %}
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'User:userSignIn' %}">
-                      <button class="btn btn-outline-primary">Login</button>
+                      <button class="btn btn-login">Login</button>
                     </a>
                   </li>
                   {% endif %}
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}">
-                      <img src="{% static 'img/chart-black.png' %}" alt="" style="width:18px;">
-                    </a>
-                  </li>
+                  
                 </ul>
               </div>
             </div>

@@ -5,19 +5,23 @@
 
 body {
     font-family: "Poppins", Arial, Helvetica, sans-serif;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
-main {
-    margin-top: 75px;
-}
-
-main {
-    height: 100vh;
+.container-fluid {
+    padding: 0;
+    /* Menghilangkan padding */
 }
 
 .col-md-7 img {
-    /* max-width: 100%; */
     width: 100%;
+    height: auto;
+    /* Menjaga aspek rasio gambar */
+}
+
+.col-md-5 {
+    padding: 9% 10%;
 }
 
 .col-md-5 h3 {

@@ -6,14 +6,17 @@ from django.http import HttpResponseBadRequest, HttpResponse
 from django.db.models import Sum
 from datetime import datetime
 
-from .models import Order, OrderItem
+from .models import Order, OrderItem, ReturnOrder, Testimonial
 from User.models import CustomUser as User
 from Cart.models import Cart, CartItem
-from .forms import *
+
+
+from .utils import currency
 
 # Create your views here.
 @login_required
 def checkoutForm(request):
+    current_user = request.user
     userEmail = None
     if request.user.is_authenticated:
         userEmail = request.user.email
@@ -42,11 +45,11 @@ def checkoutForm(request):
             'id_user': current_user.id,
             'start_date': start_date,
             'end_date': end_date,
-            'address': address
+            'address': address,
         }
         return redirect("Order:paymentOrder")
         
-    return render(request, 'order/formCheckout.html', { 'user_email': userEmail })
+    return render(request, 'order/formCheckout.html', { 'user_email': userEmail, 'current_user': current_user })
 
 
 @login_required
@@ -63,6 +66,7 @@ def paymentOrder(request):
     # Pemrosesan data keranjang belanja
     cart = Cart.objects.get_or_create(id_user=current_user)[0]
     cart_items = CartItem.objects.filter(id_cart=cart)
+    
     total_harga = cart_items.aggregate(total=Sum('subtotal'))['total'] or 0
 
     if checkout_data:
@@ -107,6 +111,8 @@ def paymentOrder(request):
                     # Kurangi stok barang setelah pembayaran berhasil
                     product.stock -= ordered_quantity
                     product.save()
+                    
+                    product.pricePerDay = currency(product.pricePerDay)
 
                 cart_items.delete()
             except Exception as e:
@@ -118,13 +124,13 @@ def paymentOrder(request):
             # Setelah pembuatan Order, tampilkan detail pembayaran pada halaman pembayaran
             return redirect("Order:pesananSaya")
         
-    order_items = OrderItem.objects.filter(id_order=order)
 
     print(cart_items)
     context = {
         'grand_total': grand_total,
         'order': order,
         'cart_items': cart_items,
+        'current_user': current_user
         # 'order_items': order_items,
     }
     
@@ -132,13 +138,18 @@ def paymentOrder(request):
 
 
 @login_required
-def PesananSaya(request, ):
+def PesananSaya(request):
     current_user = request.user
-    orders = Order.objects.filter(id_user=current_user).order_by('-created_at')  # Perbarui pemanggilan kolom
+    orders = Order.objects.filter(id_user=current_user).order_by('-created_at')
     order_details = []
 
     for order in orders:
         order_items = OrderItem.objects.filter(id_order=order)
+        
+        for order_item in order_items:
+            order_item.id_product.pricePerDay = currency(order_item.id_product.pricePerDay)
+
+        
         order_detail = {
             'order': order,
             'order_items': order_items
@@ -149,6 +160,7 @@ def PesananSaya(request, ):
         order_details.append(order_detail)
 
     context = {
+        'current_user': current_user,
         'order_details': order_details
     }
     return render(request, 'order/pesananSaya.html', context)
@@ -156,40 +168,44 @@ def PesananSaya(request, ):
 @login_required
 def returnOrder(request, order_id):
     order = Order.objects.get(id=order_id)
+    current_user = request.user
     if request.method == 'POST':
-        returnOrder_form = ReturnOrderforms(request.POST, request.FILES)
-        if returnOrder_form.is_valid():
-            return_order = returnOrder_form.save(commit=False)
-            return_order.id_order = order
-            return_order.save()
-            return redirect('Order:testimonial')
-    else:
-        returnOrder_form = ReturnOrderforms()
+        # Mengambil data dari POST request
+        return_receipt_code = request.POST.get('uploadFotoResi')
+        image = request.FILES.get('uploadFotoBarang')
+        testimoni = request.POST.get('testimoni')
+        photo_payment_fine = request.FILES.get('uploadFotoPembayaranDemda')
+        status = "Sent"  # Default status
+        
+        # Validasi jika ada denda, gambar pembayaran denda harus diunggah
+        if order.fine and not photo_payment_fine:
+            messages.error(request, "Please upload the payment receipt for the fine.")
+            return redirect('Order:returnOrder', order_id=order_id)
+
+        # Membuat objek ReturnOrder baru
+        ReturnOrder.objects.create(
+            id_order=order,
+            return_receipt_code=return_receipt_code,
+            image=image,
+            photo_payment_fine=photo_payment_fine,
+            status=status
+        )
+        
+        Testimonial.objects.create(
+            id_user = current_user,
+            content = testimoni
+        )
+
+        # Mengubah status pesanan menjadi "Return Requested"
+        order.status = "Sent"
+        order.save()
+
+        return redirect('Order:pesananSaya')
     
     context = {
-        "orders": order,
-        "title": "Return order",
-        "returnOrder_form": returnOrder_form,
+        'current_user':current_user,
+        "order": order,
     }
     return render(request, 'order/formReturnOrder.html', context)
 
-@login_required
-def testimonial(request, id):
-    user = CustomUser.objects.get(id=id)
-    if request.method == 'POST':
-        testimonial_form = TestimonialForm(request.POST)
-        if testimonial_form.is_valid():
-            testimonial = testimonial_form.save(commit=False)
-            testimonial.id_user = user  # Assign the user object to the ForeignKey field
-            testimonial.save()
-            return redirect("Order:pesananSaya")    
-    else:
-        testimonial_form = TestimonialForm()
-      
-    context = {
-        "testimonialForm": testimonial_form,
-        "users": user,
-        "title": "Testimonial",
-    }
-    return render(request, 'order/testimonialForm.html', context)
 

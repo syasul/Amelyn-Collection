@@ -87,16 +87,12 @@ def userSignInView(request):
         user = User.authenticate(email, password)
         if user is not None:
             login(request, user)
-            return redirect('User:user')
+            return redirect('home')
         else:
             messages.error(request, 'Invalid email or password')
             return redirect('User:userSignIn')
     return render(request, 'user/user_signin.html')
 
-
-
-def userView(request):
-    return render(request, 'user/user.html')
 
 # admin handlers
 
@@ -123,7 +119,7 @@ def adminSignInView(request):
 @login_required
 def dashboardView(request):
     if not request.user.is_superuser:
-        return redirect("User:user")
+        return redirect('home')
         
     userCount = CustomUser.objects.filter(is_superuser=False).count()
     productCount = Product.objects.count()
@@ -146,4 +142,4 @@ def dashboardView(request):
 @login_required
 def logoutView(request):
     logout(request)
-    return redirect('User:user')
+    return redirect('home')

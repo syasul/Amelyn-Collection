@@ -10,5 +10,5 @@ urlpatterns = [
     path('return-order/<int:order_id>', views.returnOrder, name="return-order"),
     
     # testimonial
-    path('testimonial/<int:id>/', views.testimonial, name="testimonial")
+    # path('testimonial/<int:id>/', views.testimonial, name="testimonial")
 ] 

@@ -19,9 +19,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 import multiprocessing
 
+from . import views
+
 
 urlpatterns = [
-
+    path('', views.userView, name='home'),
     path('user/', include(('User.urls', 'User'), namespace='User')),
     path('product/', include(('Product.urls', 'Product'), namespace='Product')),
     path('cart/', include(('Cart.urls', 'Cart'), namespace='Cart')),

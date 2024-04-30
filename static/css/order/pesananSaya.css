@@ -40,6 +40,32 @@ main {
 
 }
 
+.navbar-nav {
+    align-items: center;
+}
+
+header {
+    margin-top: 55px;
+}
+
+.navbar .btn-login {
+    color: black;
+    border: 1px solid black;
+    padding: 10px 15px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    line-height: 10px;
+    height: 30px;
+    font-size: 12px;
+}
+
+.btn-login:hover {
+    color: black;
+    border: 1px solid black;
+}
+
+
 @media (max-width: 768px) {
     .order p {
         font-size: 0.6rem;

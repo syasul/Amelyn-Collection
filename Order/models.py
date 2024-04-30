@@ -69,10 +69,11 @@ class ReturnOrder(models.Model):
     
     def save(self, *args, **kwargs):
         # Validasi pengembalian terlambat
-        if self.order.tanggal_pengembalian and self.order.tanggal_pengembalian < timezone.now().date():
+        if self.id_order.end_date and self.id_order.end_date < timezone.now().date():
             if not self.photo_payment_fine:
                 raise ValueError("Foto pengembalian wajib diunggah untuk pengembalian terlambat")
         super().save(*args, **kwargs)
+
 
     
 class Testimonial(models.Model):
