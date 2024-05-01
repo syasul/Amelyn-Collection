@@ -56,9 +56,9 @@ class OrderItem(models.Model):
 class ReturnOrder(models.Model):
     id_return_order = models.AutoField(primary_key=True)
     id_order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    return_receipt_code = models.CharField(max_length=255)
+    return_receipt_code = models.ImageField(upload_to="images/")
     image = models.ImageField(upload_to="images/")
-    photo_payment_fine = models.ImageField(upload_to='return_photos', null=True, blank=True)
+    photo_payment_fine = models.ImageField(upload_to='images/', null=True, blank=True)
     STATUS_CHOICES = [
         ('Sent', 'Sent'),
         ('Received', 'Received'),

@@ -171,7 +171,7 @@ def returnOrder(request, order_id):
     current_user = request.user
     if request.method == 'POST':
         # Mengambil data dari POST request
-        return_receipt_code = request.POST.get('uploadFotoResi')
+        return_receipt_code = request.FILES.get('uploadFotoResi')
         image = request.FILES.get('uploadFotoBarang')
         testimoni = request.POST.get('testimoni')
         photo_payment_fine = request.FILES.get('uploadFotoPembayaranDemda')
