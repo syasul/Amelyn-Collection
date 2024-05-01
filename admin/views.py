@@ -90,7 +90,7 @@ def updateProduct(request, update_id):
 
         # Cek apakah gambar produk baru telah diunggah
         if request.FILES.get('productImages'):
-            product.images = request.FILES['productImages']
+            product.image = request.FILES['productImages']
 
         product.save()
 

@@ -71,7 +71,7 @@
                 <th scope="row">{{product.id}}</th>
                 <td class="text-center">{{product.name}}</td>
                 <td class="text-center">{{product.stock}}</td>
-                <td class="text-center"><img src="{{ product.images.url }}" alt="Product Image" style="max-width: 100px;"></td>
+                <td class="text-center"><img src="{{ product.image.url }}" alt="Product Image" style="max-width: 100px;"></td>
                 <td class="text-center">{{product.pricePerDay}}</td>
                 <td class="text-center">{{product.sizeProduct}}</td>
                 <td class="text-center">{{product.description}}</td>
@@ -163,15 +163,31 @@
                         </div>
                         <div class="mb-3">
                             <label for="productImages" class="form-label">Current Image</label><br>
-                            <img src="{{ product.images.url }}" alt="Product Image" style="max-width: 100px;">
+                            <img src="{{ product.image.url }}" alt="Product Image" style="max-width: 100px;">
                         </div>
                         <div class="mb-3">
-                            <label for="productNewImage" class="form-label">New Image (Optional)</label>
-                            <input type="file" class="form-control shadow-none" id="productNewImage" name="productNewImage">
+                            <label for="productImages" class="form-label">Image</label>
+                            <input type="file" class="form-control shadow-none" id="productImages" name="productImages" accept="upload/images/*" required>
                         </div>
                         <div class="mb-3">
                             <label for="productPrice" class="form-label">Price per Day</label>
                             <input type="number" class="form-control shadow-none" id="productPrice" name="productPrice" value="{{ product.pricePerDay }}" required>
+                        </div>
+                        <!-- size -->
+                        <div class="mb-3">
+                            <label for="productSize" class="form-label">Size</label>
+                            <select class="form-select shadow-none" id="productSize" name="productSize" required>
+                                <option value="">Pilih ukuran</option>
+                                <option value="S" {% if product.sizeProduct == 'S' %} selected {% endif %}>S</option>
+                                <option value="M" {% if product.sizeProduct == 'M' %} selected {% endif %}>M</option>
+                                <option value="L" {% if product.sizeProduct == 'L' %} selected {% endif %}>L</option>
+                                <option value="XL" {% if product.sizeProduct == 'XL' %} selected {% endif %}>XL</option>
+                            </select>
+                        </div>
+                        <!-- desc -->
+                        <div class="mb-3">
+                            <label for="productDesc" class="form-label">Description</label>
+                            <textarea class="form-control shadow-none" id="productDesc" name="productDesc" rows="3" required>{{ product.description }}</textarea>
                         </div>
                         <!-- Add other fields as needed -->
                         <button type="submit" class="btn btn-primary">Update</button>
