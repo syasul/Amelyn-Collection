@@ -53,12 +53,13 @@
       <table class="table  table-striped">
         <thead>
           <tr>
-            <th class="text-center">ID Pesanan</th>
+            
             <th class="text-center">ID User</th>
             <th class="text-center">Tanggal Mulai</th>
             <th class="text-center">Tanggal Selesai</th>
             <th class="text-center">Denda</th>
             <th class="text-center">Total</th>
+            <th class="text-center">Foto Transfer</th>
             <th class="text-center">Status</th>
             <th class="text-center">Alamat</th>
             <th class="text-center">Action</th>
@@ -67,12 +68,13 @@
         <tbody>
           {% for order in orders %}
           <tr>
-            <td class="text-center">{{ order.id }}</td>
+            
             <td class="text-center">{{ order.id_user }}</td>
             <td class="text-center">{{ order.start_date }}</td>
             <td class="text-center">{{ order.end_date }}</td>
             <td class="text-center">{{ order.fine }}</td>
             <td class="text-center">{{ order.grand_total }}</td>
+            <td class="text-center"><img src="{{ product.return_receipt_code.url }}" alt="Product Image" style="max-width: 100px;"></td>
             <td class="text-center">
               <form action="{% url 'Admin:update_status' id_order=order.id %}" method="POST">
                 {% csrf_token %}

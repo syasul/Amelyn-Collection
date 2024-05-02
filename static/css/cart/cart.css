@@ -57,6 +57,13 @@ header {
     border: 1px solid black;
 }
 
+.checkout {
+    border: 2px solid #f0f0f0;
+    padding: 10px 0px;
+    border-radius: 10px;
+    height: 115px;
+}
+
 
 @media (max-width: 1398px) {
     .col-3 img {
@@ -73,10 +80,6 @@ header {
 
     .qty {
         margin-left: -15px;
-    }
-
-    .total {
-        margin-left: 20px;
     }
 
     .qty button img {

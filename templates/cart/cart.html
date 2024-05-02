@@ -71,26 +71,30 @@
                             <div class="card">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="{{ product.image }}" class="img-fluid rounded-start"
-                                            alt="Product Image">
+                                        <img src="{{ product.image.url }}" class="img-fluid rounded-start"
+                                            alt="Product Image" style="height: 100%;">
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ product.name }}</h5>
                                             <p class="card-text">{{ product.description }}</p>
                                             <p class="card-text stock">{{ product.stock }}</p>
                                             <h5 class="card-title">{{ product.pricePerDay }}</h5>
-                                            <div class="counter">
-                                                <button class="counter-btn btn btn-primary decrement">-</button>
-                                                <div class="counter-value" data-item-id="{{ item_cart.id }}">
+                                            <div class="counter mt-2">
+                                                <button class="counter-btn btn btn-primary decrement" style="display: inline-block;">-</button>
+                                                <div class="counter-value" data-item-id="{{ item_cart.id }}" style="display: inline-block;">
                                                     {{ item_cart.quantity }}</div>
-                                                <button class="counter-btn btn btn-primary increment">+</button>
+                                                <button class="counter-btn btn btn-primary increment" style="display: inline-block;">+</button>
                                             </div>
-                                            <p class="card-text subtotal">Subtotal: ${{ product.pricePerDay | mul:item_cart.quantity }}</p>
-                                            <a href="{% url 'Cart:removeProductFromCart' product_id=item_cart.id %}"
-                                                class="btn btn-primary">delete</a>
+                                            <p class="card-text subtotal mt-2">Subtotal: ${{ product.pricePerDay | mul:item_cart.quantity }}</p>
+                                            
                                         </div>
                                     </div>
+                                    <div class="col-md-1 text-center">
+                                        <a href="{% url 'Cart:removeProductFromCart' product_id=item_cart.id %}"
+                                                class="btn btn-danger mt-3"><i class="fa-regular fa-trash-can"></i></a>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             {% endwith %}
@@ -100,13 +104,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 checkout">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
                             <h4>Total Harga</h4>
                             <div class="total harga" id="total_harga">{{ total_harga }}</div>
-                            <a class="btn btn-primary" href="{% url 'Order:checkoutForm' %}">Check Out</a>
+                            <a class="btn btn-primary w-100 mt-3" href="{% url 'Order:checkoutForm' %}">Check Out</a>
                         </div>
                     </div>
                 </div>

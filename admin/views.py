@@ -46,7 +46,7 @@ def addProduct(request):
     if request.method == 'POST':
         product_name = request.POST.get('productName')
         product_stock = request.POST.get('productStock')
-        product_images = request.FILES.get('productImages')
+        product_images = request.FILES['productImages']
         product_price = request.POST.get('productPrice')
         product_size = request.POST.get('productSize')
         product_desc = request.POST.get('productDesc')
@@ -89,7 +89,7 @@ def updateProduct(request, update_id):
         product.description = request.POST.get('productDesc')
 
         # Cek apakah gambar produk baru telah diunggah
-        if request.FILES.get('productImages'):
+        if request.FILES['productImages']:
             product.image = request.FILES['productImages']
 
         product.save()

@@ -69,9 +69,9 @@
                 <tr>
                     <td class="text-center">{{ returnOrder.id_return_order }}</td>
                     <td class="text-center">{{ returnOrder.id_order }}</td>
-                    <td class="text-center">{{ returnOrder.return_receipt_code }}</td>
-                    <td class="text-center">{{ returnOrder.image }}</td>
-                    <td class="text-center">{{ returnOrder.photo_payment_fine }}</td>
+                    <td class="text-center"><img src="{{ returnOrder.return_receipt_code.url }}" alt="Product Image" style="max-width: 100px;"></td>
+                    <td class="text-center"><img src="{{ returnOrder.image.url }}" alt="Product Image" style="max-width: 100px;"></td>
+                    <td class="text-center"><img src="{{ returnOrder.photo_payment_fine.url }}" alt="Product Image" style="max-width: 100px;"></td>
                     <td class="text-center">
                         <form action="{% url 'Admin:update-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
                             {% csrf_token %}

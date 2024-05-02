@@ -75,7 +75,7 @@
                     <div class="row mb-3 shadow-sm border radius">
                         <!-- Product Image -->
                         <div class="col-3">
-                            <img class="mt-2 radius mb-2" src="{{ product.image }}" width="150px" alt="">
+                            <img class="mt-2 radius mb-2" src="{{ product.image.url }}" width="150px" height="80px" alt="">
                         </div>
                         <!-- Product Details -->
                         <div class="col-3">
@@ -107,7 +107,7 @@
                             
                             <div class="mb-3 form-group">
                                 <label for="paymentReceipt" class="form-label">Upload Payment Receipt</label>
-                                <input type="file" class="form-control shadow-none" id="paymentReceipt" placeholder="Upload Payment Receipt" name="payment_receipt_image_path">
+                                <input type="file" class="form-control shadow-none" id="paymentReceipt" placeholder="Upload Payment Receipt" name="payment_receipt_image_path" accept="upload/images/*" >
                             </div>
                             <div class="mb-3 form-group">
                                 <button style="width: 100%;" type="submit" class="btn checkout-button">Checkout</button>

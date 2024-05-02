@@ -99,7 +99,7 @@
                     <tbody>
                       {% for product in products %}
                       <tr>
-                        <td class="text-center">{{ product.image }}</td>
+                        <td class="text-center"><img src="{{ product.image.url }}" alt="Product Image" style="max-width: 100px;" class="rounded"></td>
                         <td class="text-center">{{ product.name }}</td>
                         <td class="text-center">{{ product.description }}</td>
                         <td class="text-center">{{ product.pricePerDay }}</td>
@@ -115,8 +115,7 @@
                     <thead>
                       <tr>
                         <th class="text-center">Username</th>
-                        <th class="text-center">Testimonial</th>
-                        <th class="text-center">Create At</th>
+                        <th class="text-center">Message</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -124,7 +123,7 @@
                       <tr>
                         <td class="text-center">{{ testimonial.id_user }}</td>
                         <td class="text-center">{{ testimonial.content }}</td>
-                        <td class="text-center">{{ testimonial.created_at }}</td>
+                        
                       </tr>
                       {% endfor %}
                     </tbody>

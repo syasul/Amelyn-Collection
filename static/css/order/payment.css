@@ -18,6 +18,7 @@ main {
 
 .checkout-button:hover {
     color: white;
+    background-color: #ffb98f;
 }
 
 .radius {

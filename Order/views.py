@@ -68,7 +68,7 @@ def paymentOrder(request):
     cart_items = CartItem.objects.filter(id_cart=cart)
     
     total_harga = cart_items.aggregate(total=Sum('subtotal'))['total'] or 0
-
+    
     if checkout_data:
         id_user = current_user
         start_date_str = checkout_data['start_date']
@@ -82,50 +82,47 @@ def paymentOrder(request):
         jumlah_hari = delta.days
 
         grand_total = jumlah_hari * total_harga
+    
+    if request.method == "POST":
+        payment_receipt_image_path = request.FILES['payment_receipt_image_path']
+    
+        try:
+            # Buat sebuah Order baru
+            order = Order.objects.create(
+                id_user=id_user,
+                start_date=start_date,
+                end_date=end_date,
+                grand_total=grand_total,
+                status="Unconfirm",
+                payment_receipt_image_path=payment_receipt_image_path,
+                address=address
+            )
 
-        if request.method == "POST":
-
-            payment_receipt_image_path = request.FILES.get('payment_receipt_image_path')
-
-            try:
-                # Buat sebuah Order baru
-                order = Order.objects.create(
-                    id_user=id_user,
-                    start_date=start_date,
-                    end_date=end_date,
-                    grand_total=grand_total,
-                    status="Unconfirm",
-                    payment_receipt_image_path=payment_receipt_image_path,
-                    address=address
+            for cart_item in cart_items:
+                ordered_quantity = cart_item.quantity
+                product = cart_item.id_product
+                OrderItem.objects.create(
+                    id_order=order,
+                    id_product=product,
+                    quantity=ordered_quantity,
+                    subtotal=cart_item.subtotal
                 )
+                # Kurangi stok barang setelah pembayaran berhasil
+                product.stock -= ordered_quantity
+                product.save()
+                
+                product.pricePerDay = currency(product.pricePerDay)
 
-                for cart_item in cart_items:
-                    ordered_quantity = cart_item.quantity
-                    product = cart_item.id_product
-                    OrderItem.objects.create(
-                        id_order=order,
-                        id_product=product,
-                        quantity=ordered_quantity,
-                        subtotal=cart_item.subtotal
-                    )
-                    # Kurangi stok barang setelah pembayaran berhasil
-                    product.stock -= ordered_quantity
-                    product.save()
-                    
-                    product.pricePerDay = currency(product.pricePerDay)
+            cart_items.delete()
+        except Exception as e:
+            print("Error:", e)
+            # Tangani kesalahan dengan memberikan pesan kesalahan kepada pengguna atau kembali ke halaman checkout jika diperlukan
+            messages.error(request, "An error occurred. Please try again.")
+            return redirect("Order:checkoutForm")
 
-                cart_items.delete()
-            except Exception as e:
-                print("Error:", e)
-                # Tangani kesalahan dengan memberikan pesan kesalahan kepada pengguna atau kembali ke halaman checkout jika diperlukan
-                messages.error(request, "An error occurred. Please try again.")
-                return redirect("Order:checkoutForm")
+        # Setelah pembuatan Order, tampilkan detail pembayaran pada halaman pembayaran
+        return redirect("Order:pesananSaya")
 
-            # Setelah pembuatan Order, tampilkan detail pembayaran pada halaman pembayaran
-            return redirect("Order:pesananSaya")
-        
-
-    print(cart_items)
     context = {
         'grand_total': grand_total,
         'order': order,
@@ -135,6 +132,7 @@ def paymentOrder(request):
     }
     
     return render(request, 'order/paymentOrder.html', context)
+
 
 
 @login_required
@@ -171,10 +169,10 @@ def returnOrder(request, order_id):
     current_user = request.user
     if request.method == 'POST':
         # Mengambil data dari POST request
-        return_receipt_code = request.FILES.get('uploadFotoResi')
-        image = request.FILES.get('uploadFotoBarang')
+        return_receipt_code = request.FILES['uploadFotoResi']
+        image = request.FILES['uploadFotoBarang']
         testimoni = request.POST.get('testimoni')
-        photo_payment_fine = request.FILES.get('uploadFotoPembayaranDemda')
+        photo_payment_fine = request.FILES['uploadFotoPembayaranDemda']
         status = "Sent"  # Default status
         
         # Validasi jika ada denda, gambar pembayaran denda harus diunggah
@@ -192,8 +190,8 @@ def returnOrder(request, order_id):
         )
         
         Testimonial.objects.create(
-            id_user = current_user,
-            content = testimoni
+            id_user=current_user,
+            content=testimoni
         )
 
         # Mengubah status pesanan menjadi "Return Requested"
@@ -203,9 +201,7 @@ def returnOrder(request, order_id):
         return redirect('Order:pesananSaya')
     
     context = {
-        'current_user':current_user,
-        "order": order,
+        'current_user': current_user,
+        'order': order,
     }
     return render(request, 'order/formReturnOrder.html', context)
-
-

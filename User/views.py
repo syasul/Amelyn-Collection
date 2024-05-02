@@ -9,11 +9,15 @@ from User.models import AccountVerification, CustomUser as User
 from django.contrib import messages
 from services.email_service import EmailService
 
-
+# currency format
+from .utils import currency
 
 from User.models import CustomUser
 from Product.models import Product
 from Order.models import Order, Testimonial
+
+# currency format
+from .utils import currency
 
 # user handlers
 
@@ -126,6 +130,9 @@ def dashboardView(request):
     orderCount = Order.objects.count()
     
     newProduct = Product.objects.all().order_by('-created_at')
+    for new_product in newProduct:
+        new_product.pricePerDay = currency(new_product.pricePerDay)
+    
     newTestimonial = Testimonial.objects.all().order_by('-created_at')
     
     context = {
