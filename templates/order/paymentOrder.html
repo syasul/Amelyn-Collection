@@ -3,7 +3,8 @@
 {% load mathfilters %}
 {% block header %}
 <link rel="stylesheet" href="{% static 'css/order/payment.css' %}">
-
+<link rel="icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
+<title>Amelyn Collection</title>
     
 {% endblock header %}
 
@@ -67,7 +68,7 @@
             <h3><b>Payment</b></h3>
             <div class="row justify-content-between">
                 <!-- Cart Items -->
-                <div class="col-md-8">
+                <div class="col-md-7">
                     {% for item_order in cart_items %}
                     {% with product=item_order.id_product %}
                     {% with x=context_var %}  
@@ -75,7 +76,7 @@
                     <div class="row mb-3 shadow-sm border radius">
                         <!-- Product Image -->
                         <div class="col-3">
-                            <img class="mt-2 radius mb-2" src="{{ product.image.url }}" width="150px" height="80px" alt="">
+                            <img class="mt-2 radius mb-2 w-100" src="{{ product.image.url }}" height="80px" alt="">
                         </div>
                         <!-- Product Details -->
                         <div class="col-3">
@@ -99,7 +100,7 @@
                     {% endfor %}
                 </div>
                 <!-- Payment Section -->
-                <div class="col-md-4">
+                <div class="col-md-4 ">
                     <div class="row border shadow-sm radius">
                         <h4 class="mt-3"><b>Confirm Your Purchase</b></h4>
                         <form method="post" enctype="multipart/form-data">

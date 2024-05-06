@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin | Return</title>
+    <link rel="icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
+    <title>Amelyn Collection</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/order/manageReturnOrder.css' %}">
@@ -55,9 +56,9 @@
                 <tr>
                     <th class="text-center">ID Return Order</th>
                     <th class="text-center">ID Order</th>
-                    <th class="text-center">Receipt Code</th>
-                    <th class="text-center">Image Path</th>
-                    <th class="text-center">Image Payment Fine</th>
+                    <th class="text-center">Foto Resi</th>
+                    <th class="text-center">Foto Barang</th>
+                    <th class="text-center">Foto Pembayaran Denda</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Created at</th>
                     <th class="text-center">Updated at</th>
@@ -69,9 +70,28 @@
                 <tr>
                     <td class="text-center">{{ returnOrder.id_return_order }}</td>
                     <td class="text-center">{{ returnOrder.id_order }}</td>
-                    <td class="text-center"><img src="{{ returnOrder.return_receipt_code.url }}" alt="Product Image" style="max-width: 100px;"></td>
-                    <td class="text-center"><img src="{{ returnOrder.image.url }}" alt="Product Image" style="max-width: 100px;"></td>
-                    <td class="text-center"><img src="{{ returnOrder.photo_payment_fine.url }}" alt="Product Image" style="max-width: 100px;"></td>
+                    <td class="text-center">
+                    {% if returnOrder.return_receipt_code %}
+                        <img src="{{ returnOrder.return_receipt_code.url }}" alt="Product Image" height="100px" width="100px" class="rounded modal-foto-resi" data-bs-toggle="modal" data-bs-target="#modalResi{{ returnOrder.id_return_order }}">
+                    {% else %}
+                        No image
+                    {% endif %}
+                    </td>
+                    <td class="text-center">
+                    {% if returnOrder.image %}
+                        <img src="{{ returnOrder.image.url }}" alt="Product Image" height="100px" width="100px" class="rounded modal-foto-barang" data-bs-toggle="modal" data-bs-target="#modalBarang{{ returnOrder.id_return_order }}">
+                    {% else %}
+                        No image
+                    {% endif %}
+                    </td>
+                    <td class="text-center">
+                    {% if returnOrder.photo_payment_fine %}
+                        <img src="{{ returnOrder.photo_payment_fine.url }}" alt="Product Image" height="100px" width="100px" class="rounded modal-foto-pembayaran-denda" data-bs-toggle="modal" data-bs-target="#modalDenda{{ returnOrder.id_return_order }}">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                    </td>
+                   
                     <td class="text-center">
                         <form action="{% url 'Admin:update-return-order' id_return_order=returnOrder.id_return_order %}" method="POST">
                             {% csrf_token %}
@@ -90,17 +110,88 @@
                         </form>
                     </td>
                 </tr>
-                {% endfor %}
+                {% endfor %}                
             </tbody>
         </table>
         
 
         </div>
+        <div class="modal fade" id="modalResi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Resi Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modalResiImage" src="" class="img-fluid" alt="Resi Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tambahkan elemen modal untuk Barang Image -->
+        <div class="modal fade" id="modalBarang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Barang Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modalBarangImage" src="" class="img-fluid" alt="Barang Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tambahkan elemen modal untuk Denda Image -->
+        <div class="modal fade" id="modalDenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Denda Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modalDendaImage" src="" class="img-fluid" alt="Denda Image">
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--Container Main end-->
     </main>
-
-
-    <script src="{% static 'js/sideMenu.js' %}"></script> 
+    <script>
+        $(document).ready(function () {
+            // Penanganan untuk Resi Image
+            $('.modal-foto-resi').click(function () {
+                var imageUrl = $(this).attr('src');
+                if (imageUrl !== undefined && imageUrl !== '') {
+                    $('#modalResiImage').attr('src', imageUrl);
+                    $('#modalResi').modal('show');
+                }
+            });
+    
+            // Penanganan untuk Barang Image
+            $('.modal-foto-barang').click(function () {
+                var imageUrl = $(this).attr('src');
+                if (imageUrl !== undefined && imageUrl !== '') {
+                    $('#modalBarangImage').attr('src', imageUrl);
+                    $('#modalBarang').modal('show');
+                }
+            });
+    
+            // Penanganan untuk Denda Image
+            $('.modal-foto-pembayaran-denda').click(function () {
+                var imageUrl = $(this).attr('src');
+                if (imageUrl !== undefined && imageUrl !== '') {
+                    $('#modalDendaImage').attr('src', imageUrl);
+                    $('#modalDenda').modal('show');
+                }
+            });
+        });
+    </script>
+    <script src="{% static 'js/sideMenu.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

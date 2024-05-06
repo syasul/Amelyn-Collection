@@ -84,51 +84,55 @@ def paymentOrder(request):
         grand_total = jumlah_hari * total_harga
     
     if request.method == "POST":
-        payment_receipt_image_path = request.FILES['payment_receipt_image_path']
-    
-        try:
-            # Buat sebuah Order baru
-            order = Order.objects.create(
-                id_user=id_user,
-                start_date=start_date,
-                end_date=end_date,
-                grand_total=grand_total,
-                status="Unconfirm",
-                payment_receipt_image_path=payment_receipt_image_path,
-                address=address
-            )
+        if 'payment_receipt_image_path' in request.FILES:
+            payment_receipt_image_path = request.FILES['payment_receipt_image_path']
 
-            for cart_item in cart_items:
-                ordered_quantity = cart_item.quantity
-                product = cart_item.id_product
-                OrderItem.objects.create(
-                    id_order=order,
-                    id_product=product,
-                    quantity=ordered_quantity,
-                    subtotal=cart_item.subtotal
+            try:
+                # Buat sebuah Order baru
+                order = Order.objects.create(
+                    id_user=id_user,
+                    start_date=start_date,
+                    end_date=end_date,
+                    grand_total=grand_total,
+                    status="Unconfirm",
+                    payment_receipt_image_path=payment_receipt_image_path,
+                    address=address
                 )
-                # Kurangi stok barang setelah pembayaran berhasil
-                product.stock -= ordered_quantity
-                product.save()
-                
-                product.pricePerDay = currency(product.pricePerDay)
 
-            cart_items.delete()
-        except Exception as e:
-            print("Error:", e)
-            # Tangani kesalahan dengan memberikan pesan kesalahan kepada pengguna atau kembali ke halaman checkout jika diperlukan
-            messages.error(request, "An error occurred. Please try again.")
-            return redirect("Order:checkoutForm")
+                for cart_item in cart_items:
+                    ordered_quantity = cart_item.quantity
+                    product = cart_item.id_product
+                    OrderItem.objects.create(
+                        id_order=order,
+                        id_product=product,
+                        quantity=ordered_quantity,
+                        subtotal=cart_item.subtotal
+                    )
+                    # Kurangi stok barang setelah pembayaran berhasil
+                    product.stock -= ordered_quantity
+                    product.save()
+                    
+                    product.pricePerDay = currency(product.pricePerDay)
 
-        # Setelah pembuatan Order, tampilkan detail pembayaran pada halaman pembayaran
-        return redirect("Order:pesananSaya")
+                cart_items.delete()
+            except Exception as e:
+                print("Error:", e)
+                # Tangani kesalahan dengan memberikan pesan kesalahan kepada pengguna atau kembali ke halaman checkout jika diperlukan
+                messages.error(request, "An error occurred. Please try again.")
+                return redirect("Order:checkoutForm")
+
+            # Setelah pembuatan Order, tampilkan detail pembayaran pada halaman pembayaran
+            return redirect("Order:pesananSaya")
+        else:
+            messages.error(request, "Please upload the payment receipt.")
+            return redirect("Order:paymentOrder")
 
     context = {
         'grand_total': grand_total,
         'order': order,
         'cart_items': cart_items,
         'current_user': current_user
-        # 'order_items': order_items,
+       
     }
     
     return render(request, 'order/paymentOrder.html', context)
@@ -144,8 +148,10 @@ def PesananSaya(request):
     for order in orders:
         order_items = OrderItem.objects.filter(id_order=order)
         
+        order.grand_total = currency(order.grand_total)
         for order_item in order_items:
             order_item.id_product.pricePerDay = currency(order_item.id_product.pricePerDay)
+            
 
         
         order_detail = {
@@ -168,20 +174,20 @@ def returnOrder(request, order_id):
     order = Order.objects.get(id=order_id)
     current_user = request.user
     if request.method == 'POST':
-        # Mengambil data dari POST request
-        return_receipt_code = request.FILES['uploadFotoResi']
-        image = request.FILES['uploadFotoBarang']
-        testimoni = request.POST.get('testimoni')
-        photo_payment_fine = request.FILES['uploadFotoPembayaranDemda']
-        status = "Sent"  # Default status
+        return_receipt_code = request.FILES.get('return_receipt_code', None)
+        image = request.FILES.get('uploadFotoBarang', None)
+        testimoni = request.POST.get('testimoni', None)
+        photo_payment_fine = request.FILES.get('photo_payment_fine', None)
         
         # Validasi jika ada denda, gambar pembayaran denda harus diunggah
-        if order.fine and not photo_payment_fine:
+        if order.fine > 0 and not photo_payment_fine:
             messages.error(request, "Please upload the payment receipt for the fine.")
             return redirect('Order:returnOrder', order_id=order_id)
 
+        # Jika tidak ada denda atau foto pembayaran denda sudah diunggah, proses pengembalian pesanan
+        status = "Sent"  # Default status
         # Membuat objek ReturnOrder baru
-        ReturnOrder.objects.create(
+        return_order = ReturnOrder.objects.create(
             id_order=order,
             return_receipt_code=return_receipt_code,
             image=image,
@@ -189,12 +195,14 @@ def returnOrder(request, order_id):
             status=status
         )
         
-        Testimonial.objects.create(
-            id_user=current_user,
-            content=testimoni
-        )
+        # Jika terdapat testimoni, buat objek testimonial baru
+        if testimoni:
+            Testimonial.objects.create(
+                id_user=current_user,
+                content=testimoni
+            )
 
-        # Mengubah status pesanan menjadi "Return Requested"
+        # Mengubah status pesanan menjadi "Sent"
         order.status = "Sent"
         order.save()
 

@@ -68,10 +68,9 @@ class ReturnOrder(models.Model):
     updated_at = models.DateField(auto_now=True)
     
     def save(self, *args, **kwargs):
-        # Validasi pengembalian terlambat
-        if self.id_order.end_date and self.id_order.end_date < timezone.now().date():
+        if self.id_order.fine > 0:
             if not self.photo_payment_fine:
-                raise ValueError("Foto pengembalian wajib diunggah untuk pengembalian terlambat")
+                raise ValueError("Foto pembayaran denda wajib diunggah untuk pengembalian terlambat")
         super().save(*args, **kwargs)
 
 
