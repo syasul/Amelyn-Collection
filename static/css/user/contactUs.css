@@ -1,0 +1,90 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../../Poppins/Poppins-Regular.ttf');
+}
+
+body {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+main {
+    margin-top: 75px;
+}
+
+.bg-order {
+    background-color: #c9c9c9;
+}
+
+.return-button {
+    background-color: #f45d50;
+    color: white;
+}
+
+.return-button:hover {
+    background-color: #f45d50;
+    color: white;
+}
+
+.radius {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.order {
+    border-radius: 10px;
+}
+
+.send-btn {
+    background-color: #9ec8b9;
+    color: white;
+
+}
+
+.navbar-nav {
+    align-items: center;
+}
+
+header {
+    margin-top: 55px;
+}
+
+.navbar .btn-login {
+    color: black;
+    border: 1px solid black;
+    padding: 10px 15px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    line-height: 10px;
+    height: 30px;
+    font-size: 12px;
+}
+
+.btn-login:hover {
+    color: black;
+    border: 1px solid black;
+}
+
+
+.contact-info {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.description-button {
+    background-color: #5c8374;
+    color: white;
+}
+
+.description-button:hover {
+    background-color: #5c8374;
+    color: white;
+}
+
+.contact {
+    margin-right: -100px;
+}

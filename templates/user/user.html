@@ -25,10 +25,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Beranda</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Produk</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Hubungi Kami</a>
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
@@ -37,8 +40,8 @@
                 Hi, {{current_user}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
-                <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
+                <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">Pesanan Saya</a></li>
+                <li><a class="dropdown-item" href="{% url 'User:logout' %}">Keluar</a></li>
               </ul>
             </li>
             <li class="nav-item">
@@ -68,22 +71,24 @@
       <!-- Hero Section -->
       <div class="hero-section rounded-4 d-flex justify-content-center align-items-center text-center flex-column">
         <h1><b>STYLE THAT <br>PEAK</b></h1>
-        <h5 class="mt-3"><b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae iure eius aperiam dolor, similique quis,
-          voluptates porro tenetur exercitationem voluptas cupiditate facere, quae corporis! Unde nisi aut repellat ab
-          quasi!</b></h5>
-        <a href="{% url 'Product:list-product' %}" class="btn btn-reserved rounded-3 mt-3 fw-bold">Reserved Now</a>
+        <h5 class="mt-3">Berkreasi tanpa batas dengan koleksi kostum kami yang kaya akan pilihan dari berbagai tema dan era. Apakah Anda ingin menjadi pahlawan super, karakter sejarah, atau mengeksplorasi dunia fantasi? Kami memiliki kostum yang sempurna untuk setiap acara dan kebutuhan.</h5>
+        <a href="{% url 'Product:list-product' %}" class="btn btn-reserved rounded-3 mt-3 fw-medium">Reservasi Sekarang</a>
       </div>
 
 
       <!-- About -->
-      <h3 class="fw-bold mt-5">About Us</h3>
+      <h3 class="fw-bold mt-5">Tentang Kami</h3>
       <hr class="line rounded-4">
       <div class="about">
         <div class="row">
           <div class="col-md-7 d-flex justify-content-center align-items-center">
-            <h5>Amelyn Collection Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio a corporis autem natus
-              nihil ducimus veniam amet fugit. Quas, debitis earum molestiae nostrum nulla facere recusandae maxime
-              perspiciatis officiis vitae.</h5>
+            <h5 class="fw-medium">Selamat datang di Amelyn Collection! Kami adalah destinasi utama Anda untuk penyewaan kostum yang luar biasa dan beragam. Di sini di Amelyn Collection, kami mengerti betapa pentingnya setiap momen istimewa dalam hidup Anda, dan kami berkomitmen untuk membantu Anda menjadikannya tak terlupakan.
+
+              Didirikan dengan hasrat untuk membawa imajinasi menjadi kenyataan, kami menawarkan koleksi kostum yang luas dan berkualitas tinggi untuk memenuhi kebutuhan setiap acara dan tema. Dari kostum klasik yang selalu populer hingga tren terbaru di dunia hiburan, kami memiliki pilihan yang tepat untuk setiap karakter yang ingin Anda hidupkan.
+              
+              Kami bukan hanya sekadar penyedia kostum. Kami adalah mitra dalam petualangan kreatif Anda. Tim kami yang berdedikasi siap membantu Anda menemukan kostum yang sesuai dengan visi Anda, dan kami menyediakan layanan pelanggan yang ramah serta proses penyewaan yang mudah untuk memastikan pengalaman yang menyenangkan dari awal hingga akhir.
+              
+              Kami bangga menjadi bagian dari setiap cerita yang Anda tulis, setiap karakter yang Anda perankan, dan setiap momen yang Anda rayakan. Mari bergabung dengan kami di Amelyn Collection dan mulailah petualangan kostum Anda sekarang!</h5>
           </div>
           <div class="col-md-5">
             <img src="{% static 'img/about.png' %}" width="450px" alt="" class="rounded-4">
@@ -92,10 +97,10 @@
       </div>
 
       <!-- New Product -->
-      <h3 class="fw-bold mt-5">New Products</h3>
+      <h3 class="fw-bold mt-5">Produk Terbaru</h3>
       <hr class="line rounded-4">
       <div class="row justify-content-start">
-        {% for product in products  %}  
+        {% for product in products|slice:":5" %}
               <!-- card -->
               <div class="card mb-3 shadow-sm" style="width: 18rem; margin: 0 5px">
                   <img src="{{product.image.url}}" class="card-img-top mt-3"
@@ -103,7 +108,7 @@
                   <div class="card-body">
                       <h5 class="card-title">{{product.name}}</h5>
                       <p><b>{{product.pricePerDay}}</b></p>
-                      <p class="card-text">{{product.stock}}</p>
+                      <p class="card-text">stok: {{product.stock}}</p>
 
                       <div class="row">
                           <div class="col">
@@ -111,10 +116,10 @@
                               {% if product.stock != 0 %}
                               <form method="post" action="{% url 'Cart:add_to_cart' product_id=product.id %}">
                                 {% csrf_token %}
-                                <button class="btn bt-sm cart-button w-100" type="submit">Add to Cart</button>
+                                <button class="btn bt-sm cart-button text-center w-100" type="submit"><i class="fa-solid fa-cart-plus"></i></button>
                               </form>
                             {% else %}
-                              <button class="btn bt-sm cart-button disabled w-100" type="submit">Add to Cart</button>
+                              <button class="btn bt-sm cart-button text-center disabled w-100" type="submit"><i class="fa-solid fa-cart-plus"></i></button>
                             {% endif %}
                           </div>
                           <div class="col">
@@ -133,7 +138,7 @@
       <div class="row justify-content-start text-center">
 
         
-        {% for testi in testimonials %}
+        {% for testi in testimonials|slice:":6" %}
         <div class="card mb-3 shadow-sm" style="width: 15rem; margin: 0px 3px;">
           <div class="card-body">
             <h5 class="card-title">{{testi.id_user}}</h5>
@@ -151,12 +156,12 @@
   <!-- Footer -->
   <footer>
     <div class="container text-center mt-5">
-      <p>UPSKILL FOR A BETTER FUTURE</p>
-      <h1><b>Request More Information</b></h1>
-      <h6>AMELYN COLLECTION is a clinical stage healthcare company which is developing a unique.</h6>
+      <p>KREASIKAN OUTFIT DENGAN BEBAS</p>
+      <h1><b>Informasi Lebih Lanjut</b></h1>
+      <h6>Amelyn Collection adalah destinasi utama untuk penyewaan kostum, menyediakan pilihan kostum berkualitas tinggi yang tak tertandingi untuk setiap acara.</h6>
       <div class="d-flex justify-content-around mt-5">
         <img src="{% static 'img/logo.png' %}" alt="" height="35px">
-        <a href="#" class="btn bt-sm description-button contact rounded-3">Contact Us</a>
+        <a href="{% url 'contact' %}" class="btn bt-sm description-button contact rounded-3">Hubungi Kami</a>
         <div class="row">
             <div class="col-md-3">
                 <a href="#"><img src="{% static 'img/linkedin.png' %}" class="card-img-top mt-3" alt=""></a>

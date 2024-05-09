@@ -24,6 +24,7 @@ from . import views
 
 urlpatterns = [
     path('', views.userView, name='home'),
+    path('ContactUs', views.contactView, name='contact'),
     path('user/', include(('User.urls', 'User'), namespace='User')),
     path('product/', include(('Product.urls', 'Product'), namespace='Product')),
     path('cart/', include(('Cart.urls', 'Cart'), namespace='Cart')),

@@ -26,16 +26,15 @@
           <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="{% static 'img/logo.png' %}" alt=""
                   height="25px"><span class="nav_logo-name text-black">Amelyn Collection</span></a>
           <div class="nav_list">
-              <a href="{% url 'User:admin' %}" class="nav_link">
+              <a href="{% url 'User:admin' %}" class="nav_link active rounded-end">
                   <i class='bx bx-grid-alt nav_icon'></i>
                   <span class="nav_name">Dashboard</span> </a>
               <a href="{% url 'Admin:manage-product' %}" class="nav_link"> <i class='bx bxs-t-shirt'></i> <span
-                      class="nav_name">Product</span>
+                      class="nav_name">Produk</span>
               </a>
               <a href="{% url 'Admin:manage-order' %}" class="nav_link"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
-              <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
-                      Return</span> </a>
-              <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link active rounded-end"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
+              <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Pengembalian Order</span> </a>
+              <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
           </div>
       </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
               class="nav_name">Log Out</span> </a>
@@ -44,7 +43,7 @@
 
   <main>
       <!--Container Main start-->
-      <h4><b>Manage Testimoni</b></h4>
+      <h4><b>Testimoni</b></h4>
       <!-- Search and Add -->
       <div class="mt-5">
         <a href="{% url 'Admin:manage-testimonial' %}?sort={% if sort == 'desc' %}asc{% else %}desc{% endif %}" class="btn sort-btn">Sort <i class='bx bx-sort'></i></a>
@@ -55,8 +54,8 @@
       <table class="table  table-striped">
         <thead>
           <tr>
-            <th class="text-center">ID User</th>
-            <th class="text-center">Content</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">Pesan</th>
             <th class="text-center">Created at</th>
             <th class="text-center">Updated at</th>
             <th class="text-center">Action</th>

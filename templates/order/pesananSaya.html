@@ -28,10 +28,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                      <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
+                      <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Produk</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Hubungi Kami</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
@@ -40,8 +43,8 @@
                         Hi, {{current_user}}
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
-                        <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">Pesanan Saya</a></li>
+                        <li><a class="dropdown-item" href="{% url 'User:logout' %}">Keluar</a></li>
                       </ul>
                     </li>
                     <li class="nav-item">
@@ -81,7 +84,7 @@
                       <p class="mt-3">Denda: Rp {{ order_detail.order.fine }}</p>
                       <p class="mt-3">Status: {{ order_detail.order.status }}</p>
                       <button type="button" class="btn return-button mt-2 mb-2" data-bs-toggle="modal"
-                      data-bs-target="#return2" {% if order_detail.order.status == 'Sent' %} disabled {% endif %}>Return</button>
+                      data-bs-target="#return2" {% if order_detail.order.status == 'Terkirim' %} disabled {% endif %}>Kembalikan</button>
                   </div>
                   <!-- Return Modal -->
                   <div class="modal fade" id="return2" tabindex="-1" role="dialog" aria-labelledby="return2Title"
@@ -89,7 +92,7 @@
                       <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                               <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle">Return Order</h5>
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Pengembalian Order</h5>
                               </div>
                               <div class="modal-body">
                                 <form action="{% url 'Order:return-order' order_id=order_detail.order.id %}" method="POST" enctype="multipart/form-data">
@@ -112,7 +115,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn send-btn">Send</button>
+                                        <button type="submit" class="btn send-btn">Kirim</button>
                                     </div>
                                 </form>
                             </div>

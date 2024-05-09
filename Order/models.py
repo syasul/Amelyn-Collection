@@ -14,9 +14,9 @@ class Order(models.Model):
     grand_total = models.BigIntegerField()
     delivery_receipt_code = models.CharField(max_length=255)
     STATUS_CHOICES = (
-        ("Unconfirm", "Unconfirm"),
-        ("Confirmed", "Confirmed"),
-        ("Delivered", "Delivered"),
+        ("Belun Terkonfirmasi", "Belun Terkonfirmasi"),
+        ("Terkonfirmasi", "Terkonfirmasi"),
+        ("Dikirim", "Dikirim"),
     )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     payment_receipt_image_path = models.ImageField(upload_to="images/")
@@ -26,7 +26,7 @@ class Order(models.Model):
     fine = models.BigIntegerField(default=0)
     
     def hitung_fine(self):
-        if self.status == 'Delivered':
+        if self.status == 'Dikirim':
             if self.end_date < timezone.now().date():
                 hari_keterlambatan = (timezone.now().date() - self.end_date).days
                 if hari_keterlambatan > 0:
@@ -60,10 +60,10 @@ class ReturnOrder(models.Model):
     image = models.ImageField(upload_to="images/")
     photo_payment_fine = models.ImageField(upload_to='images/', null=True, blank=True)
     STATUS_CHOICES = [
-        ('Sent', 'Sent'),
-        ('Received', 'Received'),
+        ('Terkirim', 'Terkirim'),
+        ('Diterima', 'Diterima'),
     ]
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Sent')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Terkirim')
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     

@@ -26,10 +26,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                  <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Beranda</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
+                  <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Produk</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Hubungi Kami</a>
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
@@ -38,8 +41,8 @@
                     Hi, {{current_user}}
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
-                    <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
+                    <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">Pesanan Saya</a></li>
+                <li><a class="dropdown-item" href="{% url 'User:logout' %}">Keluar</a></li>
                   </ul>
                 </li>
                 <li class="nav-item">
@@ -83,7 +86,7 @@
                   <img src="{{product.image.url}}" class="card-img-top mt-3" alt="..." style="height: 170px;">
                   <div class="card-body">
                       <h5 class="card-title">{{product.name}}</h5>
-                      <p>{{product.pricePerDay}} /day</p>
+                      <p>{{product.pricePerDay}} /hari</p>
                       <p class="card-text">stok: {{product.stock}}</p>
 
                       <div class="row">
@@ -92,10 +95,10 @@
                               {% if product.stock != 0 %}
                               <form method="post" action="{% url 'Cart:add_to_cart' product_id=product.id %}">
                                 {% csrf_token %}
-                                <button class="btn bt-sm cart-button w-100" type="submit">Add to Cart</button>
+                                <button class="btn bt-sm cart-button w-100" type="submit"><i class="fa-solid fa-cart-plus"></i></button>
                               </form>
                             {% else %}
-                              <button class="btn bt-sm cart-button disabled w-100" type="submit">Add to Cart</button>
+                              <button class="btn bt-sm cart-button disabled w-100" type="submit"><i class="fa-solid fa-cart-plus"></i></button>
                             {% endif %}
                           </div>
                           <div class="col">
@@ -111,5 +114,31 @@
           </div>
       </div>
   </main>
-
+  <footer>
+    <div class="container text-center mt-5">
+      <p>KREASIKAN OUTFIT DENGAN BEBAS</p>
+      <h1><b>Informasi Lebih Lanjut</b></h1>
+      <h6>Amelyn Collection adalah destinasi utama untuk penyewaan kostum, menyediakan pilihan kostum berkualitas tinggi yang tak tertandingi untuk setiap acara.</h6>
+      <div class="d-flex justify-content-around mt-5">
+        <img src="{% static 'img/logo.png' %}" alt="" height="35px">
+        <a href="{% url 'contact' %}" class="btn bt-sm description-button contact rounded-3">Hubungi Kami</a>
+        <div class="row">
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/linkedin.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/b.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/ig.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            <div class="col-md-3">
+                <a href="#"><img src="{% static 'img/yt.png' %}" class="card-img-top mt-3" alt=""></a>
+            </div>
+            
+        </div>
+      </div>
+      <p class="mt-3">&copy;2024-AMELYN COLLECTION</p>
+    </div>
+  </footer>
 {% endblock content %}

@@ -24,10 +24,13 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Beranda</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Produk</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Hubungi Kami</a>
                   </li>
                   {% if user.is_authenticated %}
                   <li class="nav-item dropdown">
@@ -36,8 +39,8 @@
                       Hi, {{current_user}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
-                      <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
+                        <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">Pesanan Saya</a></li>
+                        <li><a class="dropdown-item" href="{% url 'User:logout' %}">Keluar</a></li>
                     </ul>
                   </li>
                   <li class="nav-item">
@@ -59,7 +62,7 @@
           </nav>
       </div>
     <div class="container">
-        <h3><b>Cart</b></h3>
+        <h3><b>Keranjang</b></h3>
         <div class="row">
             <div class="col-md-8">
                 <div class="container">

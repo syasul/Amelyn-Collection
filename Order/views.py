@@ -94,7 +94,7 @@ def paymentOrder(request):
                     start_date=start_date,
                     end_date=end_date,
                     grand_total=grand_total,
-                    status="Unconfirm",
+                    status="Belum Tekonfirmasi",
                     payment_receipt_image_path=payment_receipt_image_path,
                     address=address
                 )
@@ -185,7 +185,7 @@ def returnOrder(request, order_id):
             return redirect('Order:returnOrder', order_id=order_id)
 
         # Jika tidak ada denda atau foto pembayaran denda sudah diunggah, proses pengembalian pesanan
-        status = "Sent"  # Default status
+        status = "Tekirim"  # Default status
         # Membuat objek ReturnOrder baru
         return_order = ReturnOrder.objects.create(
             id_order=order,
@@ -202,8 +202,8 @@ def returnOrder(request, order_id):
                 content=testimoni
             )
 
-        # Mengubah status pesanan menjadi "Sent"
-        order.status = "Sent"
+        # Mengubah status pesanan menjadi "Tekirim"
+        order.status = "Tekirim"
         order.save()
 
         return redirect('Order:pesananSaya')

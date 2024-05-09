@@ -25,16 +25,15 @@
           <a href="{% url 'User:admin' %}" class="nav_logo"> <img src="{% static 'img/logo.png' %}" alt=""
                   height="25px"><span class="nav_logo-name text-black">Amelyn Collection</span></a>
           <div class="nav_list">
-              <a href="{% url 'User:admin' %}" class="nav_link">
+              <a href="{% url 'User:admin' %}" class="nav_link active rounded-end">
                   <i class='bx bx-grid-alt nav_icon'></i>
                   <span class="nav_name">Dashboard</span> </a>
               <a href="{% url 'Admin:manage-product' %}" class="nav_link"> <i class='bx bxs-t-shirt'></i> <span
-                      class="nav_name">Product</span>
+                      class="nav_name">Produk</span>
               </a>
-              <a href="{% url 'Admin:manage-order' %}" class="nav_link active rounded-end"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
-              <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Product
-                      Return</span> </a>
-                      <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
+              <a href="{% url 'Admin:manage-order' %}" class="nav_link"> <i class='bx bx-notepad'></i> <span class="nav_name">Order</span> </a>
+              <a href="{% url 'Admin:manage-return-order' %}" class="nav_link"> <i class='bx bx-timer'></i> <span class="nav_name">Pengembalian Order</span> </a>
+              <a href="{% url 'Admin:manage-testimonial' %}" class="nav_link"> <i class='bx bx-message-alt'></i> <span class="nav_name">Testimoni</span> </a>
           </div>
       </div> <a href="{% url 'User:logout' %}" class="nav_link logout-btn rounded-end"> <i class='bx bx-log-out nav_icon'></i> <span
               class="nav_name">Log Out</span> </a>
@@ -43,7 +42,7 @@
 
   <main>
       <!--Container Main start-->
-      <h4><b>Manage Order</b></h4>
+      <h4><b>Order</b></h4>
       <!-- Search and Add -->
       <div class="mt-5">
         <a href="{% url 'Admin:manage-order' %}?sort={% if sort == 'desc' %}asc{% else %}desc{% endif %}" class="btn sort-btn">Sort <i class='bx bx-sort'></i></a>
@@ -55,7 +54,7 @@
         <thead>
           <tr>
             
-            <th class="text-center">Username</th>
+            <th class="text-center">Email</th>
             <th class="text-center">Tanggal Mulai</th>
             <th class="text-center">Tanggal Selesai</th>
             <th class="text-center">Denda</th>
@@ -80,9 +79,9 @@
               <form action="{% url 'Admin:update_status' id_order=order.id %}" method="POST">
                 {% csrf_token %}
                 <select class="form-select shadow-none" name="status" onchange="this.form.submit()">
-                  <option value="Unconfirm" {% if order.status == 'Unconfirm' %} selected {% endif %}>Unconfirm</option>
-                  <option value="Confirm" {% if order.status == 'Confirm' %} selected {% endif %}>Confirm</option>
-                  <option value="Delivered" {% if order.status == 'Delivered' %} selected {% endif %}>Delivered</option>
+                  <option value="Belum Tekonfirmasi" {% if order.status == 'Belum Tekonfirmasi' %} selected {% endif %}>Belum Tekonfirmasi</option>
+                  <option value="Terkonfirmasi" {% if order.status == 'Terkonfirmasi' %} selected {% endif %}>Terkonfirmasi</option>
+                  <option value="Dikirim" {% if order.status == 'Dikirim' %} selected {% endif %}>Dikirim</option>
                 </select>
               </form>
             </td>

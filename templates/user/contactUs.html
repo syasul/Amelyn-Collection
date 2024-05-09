@@ -1,0 +1,114 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block header %}
+<link rel="stylesheet" href="{% static 'css/user/contactUs.css' %}">
+<link rel="icon" href="{% static 'img/logo.ico' %}" type="image/x-icon">
+<title>Amelyn Collection</title>
+    
+{% endblock header %}
+
+{% block content %} 
+
+<header>
+    <!-- navbar -->
+    <header>
+        <!-- navbar -->
+        <div class="container mb-3 fixed-top bg-white"> 
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container-fluid ">
+                  <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="" width="30">
+                  </a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Beranda</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Produk</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Hubungi Kami</a>
+                      </li>
+                      {% if user.is_authenticated %}
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          Hi, {{current_user}}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">Pesanan Saya</a></li>
+                          <li><a class="dropdown-item" href="{% url 'User:logout' %}">Keluar</a></li>
+                        </ul>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'Cart:cart' %}">
+                          <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                      </li>
+                      {% else %}
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'User:userSignIn' %}">
+                          <button class="btn btn-login">Login</button>
+                        </a>
+                      </li>
+                      {% endif %}
+                      
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+          
+        </div>
+      </header>
+
+  <main>
+    <div class="container py-5 mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="contact-info">
+            <h2 class="text-center mb-4">Hubungi Kamu</h2>
+            <ul class="list-group">
+              <li class="list-group-item">Email: example@example.com</li>
+              <li class="list-group-item">Phone: +123456789</li>
+              <li class="list-group-item">Address: 123 Street, City, Country</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+<footer>
+  <div class="container text-center mt-5">
+    <p>KREASIKAN OUTFIT DENGAN BEBAS</p>
+    <h1><b>Informasi Lebih Lanjut</b></h1>
+    <h6>Amelyn Collection adalah destinasi utama untuk penyewaan kostum, menyediakan pilihan kostum berkualitas tinggi yang tak tertandingi untuk setiap acara.</h6>
+    <div class="d-flex justify-content-around mt-5">
+      <img src="{% static 'img/logo.png' %}" alt="" height="35px">
+      <a href="{% url 'contact' %}" class="btn bt-sm description-button contact rounded-3">Hubungi Kami</a>
+      <div class="row">
+          <div class="col-md-3">
+              <a href="#"><img src="{% static 'img/linkedin.png' %}" class="card-img-top mt-3" alt=""></a>
+          </div>
+          <div class="col-md-3">
+              <a href="#"><img src="{% static 'img/b.png' %}" class="card-img-top mt-3" alt=""></a>
+          </div>
+          <div class="col-md-3">
+              <a href="#"><img src="{% static 'img/ig.png' %}" class="card-img-top mt-3" alt=""></a>
+          </div>
+          <div class="col-md-3">
+              <a href="#"><img src="{% static 'img/yt.png' %}" class="card-img-top mt-3" alt=""></a>
+          </div>
+          
+      </div>
+    </div>
+    <p class="mt-3">&copy;2024-AMELYN COLLECTION</p>
+  </div>
+</footer>
+{% endblock content %}

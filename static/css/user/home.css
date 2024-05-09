@@ -13,6 +13,7 @@ main {
 
 .btn-reserved {
     background-color: white;
+    padding: 5px 10px;
     color: #ff2876;
 }
 

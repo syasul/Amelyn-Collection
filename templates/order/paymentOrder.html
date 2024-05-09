@@ -26,10 +26,13 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Beranda</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Product</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'Product:list-product' %}">Produk</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Hubungi Kami</a>
                   </li>
                   {% if user.is_authenticated %}
                   <li class="nav-item dropdown">
@@ -38,8 +41,8 @@
                       Hi, {{current_user}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">My Order</a></li>
-                      <li><a class="dropdown-item" href="{% url 'User:logout' %}">Log Out</a></li>
+                      <li><a class="dropdown-item" href="{% url 'Order:pesananSaya' %}">Pesanan Saya</a></li>
+                <li><a class="dropdown-item" href="{% url 'User:logout' %}">Keluar</a></li>
                     </ul>
                   </li>
                   <li class="nav-item">
@@ -65,7 +68,7 @@
 
       <main>
         <div class="container">
-            <h3><b>Payment</b></h3>
+            <h3><b>Pembayaran</b></h3>
             <div class="row justify-content-between">
                 <!-- Cart Items -->
                 <div class="col-md-7">
@@ -86,7 +89,7 @@
                         </div>
     
                         <div class="col-3 align-self-center text-center">
-                            <h4 class="mt-2">Count</h4>
+                            <h4 class="mt-2">Jumlah</h4>
                             <p class="counter-value" data-item-id="{{ item_order.id }}">{{ item_order.quantity }}</p>
                           </div>
     
@@ -102,12 +105,12 @@
                 <!-- Payment Section -->
                 <div class="col-md-4 ">
                     <div class="row border shadow-sm radius">
-                        <h4 class="mt-3"><b>Confirm Your Purchase</b></h4>
+                        <h4 class="mt-3"><b>Konfirmasi Pembayaran Pembelian</b></h4>
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             
                             <div class="mb-3 form-group">
-                                <label for="paymentReceipt" class="form-label">Upload Payment Receipt</label>
+                                <label for="paymentReceipt" class="form-label">Unggah Foto Pembayaran</label>
                                 <input type="file" class="form-control shadow-none" id="paymentReceipt" placeholder="Upload Payment Receipt" name="payment_receipt_image_path" accept="upload/images/*" >
                             </div>
                             <div class="mb-3 form-group">
