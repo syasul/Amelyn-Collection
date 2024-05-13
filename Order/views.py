@@ -10,10 +10,8 @@ from .models import Order, OrderItem, ReturnOrder, Testimonial
 from User.models import CustomUser as User
 from Cart.models import Cart, CartItem
 
-
 from .utils import currency
 
-# Create your views here.
 @login_required
 def checkoutForm(request):
     current_user = request.user
@@ -25,26 +23,36 @@ def checkoutForm(request):
         firstName = request.POST.get('firstName')
         lastName = request.POST.get('lastName')
         email = request.POST.get('email')
-        start_date = request.POST.get('checkIn')
-        end_date = request.POST.get('checkOut')
+        start_date_str = request.POST.get('checkIn')  # Ubah ke string
+        end_date_str = request.POST.get('checkOut')   # Ubah ke string
         telephone = request.POST.get('telephone')
         address = request.POST.get('address')
         
         # Validasi tanggal check-in harus minimal hari ini dan harus lebih awal daripada check-out
-        if start_date < timezone.now().strftime('%Y-%m-%d'):
+        if start_date_str < timezone.now().strftime('%Y-%m-%d'):
             messages.error(request, "Check-in date cannot be in the past.")
             return redirect("Order:checkoutForm")
 
-        if end_date <= start_date:
+        if end_date_str <= start_date_str:
             messages.error(request, "Check-out date must be after check-in date.")
+            return redirect("Order:checkoutForm")
+        
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+        
+        delta = end_date - start_date
+        jumlah_hari = delta.days
+        
+        if jumlah_hari > 15:
+            messages.error(request, "Maximum loan 15 days")
             return redirect("Order:checkoutForm")
         
         current_user = request.user
         
         request.session['checkout_data'] = {
             'id_user': current_user.id,
-            'start_date': start_date,
-            'end_date': end_date,
+            'start_date': start_date_str,  # Simpan sebagai string
+            'end_date': end_date_str,      # Simpan sebagai string
             'address': address,
         }
         return redirect("Order:paymentOrder")

@@ -67,8 +67,9 @@
     </header>
     
   <main>
-    {% include 'widgets/flasher.html' %}
+    
       <div class="container">
+        {% include 'widgets/flasher.html' %}
           <!-- search form -->
           <div class="col-md-3 ms-auto mb-3">
             <form class="d-flex" action="{% url 'Product:list-product' %}" method="GET">

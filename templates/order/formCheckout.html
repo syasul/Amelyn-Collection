@@ -67,9 +67,12 @@
       </header>
 
     <main>
+      
         <div class="container d-flex justify-content-center mb-3">
+          
             <!-- form check out -->
             <div class="col-md-6">
+              {% include 'widgets/flasher.html' %}
                 <h3 class="text-center"><b>Check Out</b></h3>
                 <form method="POST">
                   {% csrf_token %}
