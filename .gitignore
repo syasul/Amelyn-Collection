@@ -1,9 +1,11 @@
-/.env
+/.env*
 /.venv
-/database_ca.pem
 
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Django stuff
+/staticfiles/
