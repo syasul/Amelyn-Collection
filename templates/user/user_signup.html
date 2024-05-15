@@ -31,6 +31,7 @@
                       <input type="password" class="form-control shadow-none" name="password" id="exampleInputPassword1"
                           placeholder="Password">
                   </div>
+                  {% include 'widgets/flasher.html' %}
                   <button type="submit" class="btn">Register</button>
                   <p>Already have an account? <a href="{% url 'User:userSignIn' %}">Sign In</a></p>
               </form>

@@ -28,6 +28,23 @@ def userSignUpView(request):
         lastName = request.POST.get('lastName')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        
+
+        if not firstName:
+            messages.warning(request, "First name cannot be empty.")
+            return redirect('User:userSignUp')
+
+        if not lastName:
+            messages.warning(request, "Last name cannot be empty.")
+            return redirect('User:userSignUp')
+
+        if not email:
+            messages.warning(request, "Email cannot be empty.")
+            return redirect('User:userSignUp')
+
+        if not password:
+            messages.warning(request, "Password cannot be empty.")
+            return redirect('User:userSignUp')
 
         # Create a user without saving to the database
         isEmailExists = User.objects.filter(email=email).exists()
@@ -87,6 +104,14 @@ def userSignInView(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+        
+        if not email:
+            messages.warning(request, "Email cannot be empty.")
+            return redirect('User:userSignUp')
+
+        if not password:
+            messages.warning(request, "Password cannot be empty.")
+            return redirect('User:userSignUp')
 
         user = User.authenticate(email, password)
         if user is not None:
