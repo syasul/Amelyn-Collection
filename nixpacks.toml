@@ -1,0 +1,5 @@
+[phases.setup]
+aptPkgs = ['...', 'python3-dev', 'default-libmysqlclient-dev', 'build-essential', 'pkg-config', 'libmysqlclient-dev']
+
+[phases.build]
+cmds = ['python manage.py collectstatic']
