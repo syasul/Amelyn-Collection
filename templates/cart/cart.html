@@ -90,7 +90,7 @@
                                                     {{ item_cart.quantity }}</div>
                                                 <button class="counter-btn btn btn-primary increment" style="display: inline-block;">+</button>
                                             </div>
-                                            <p class="card-text subtotal mt-2">Subtotal: {{ product.pricePerDay | mul:item_cart.quantity }}</p>
+                                            <p class="card-text subtotal mt-2">Subtotal: {{ item_cart.subtotal  }}</p>
                                             
                                         </div>
                                     </div>

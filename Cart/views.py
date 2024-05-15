@@ -46,7 +46,8 @@ def addToCart(request, product_id):
         current_user = request.user
 
         if not current_user.is_authenticated:
-            return HttpResponse("Anda harus masuk untuk menambahkan item ke keranjang belanja.")
+            messages.warning(request, "Anda harus masuk untuk menambahkan item ke keranjang belanja.")
+            return redirect('Product:list-product')
 
         product = Product.objects.get(id=product_id)
 
@@ -55,19 +56,22 @@ def addToCart(request, product_id):
         cart_item, created = CartItem.objects.get_or_create(id_cart=cart, id_product=product)
 
         if not created:
+            # Jika item sudah ada di keranjang, tambahkan satu ke jumlahnya
             cart_item.quantity += 1
-            cart_item.subtotal += product.pricePerDay
-            cart_item.save()
 
-        else:
-            cart_item.subtotal = product.pricePerDay
-            cart_item.save()
+        # Update subtotal dengan harga produk per hari dikali jumlah
+        cart_item.subtotal = product.pricePerDay * cart_item.quantity
+        cart_item.save()
 
-        messages.success(
-            request, 'Item berhasil ditambahkan ke keranjang belanja.')
+        # Calculate the total harga for the cart
+        total_harga = CartItem.objects.filter(id_cart=cart).aggregate(total=Sum('subtotal'))['total'] or 0
+
+        messages.success(request, 'Item berhasil ditambahkan ke keranjang belanja.')
         return redirect('Product:list-product')
     except Exception as e:
-        return HTTPError().error500(e)
+        # Gunakan HttpResponse untuk menampilkan pesan kesalahan yang lebih spesifik
+        return HttpResponse("Terjadi kesalahan: " + str(e))
+    
 def removeProductFromCart(request, product_id):
     try:
         CartItem.objects.filter(id=product_id).delete()
