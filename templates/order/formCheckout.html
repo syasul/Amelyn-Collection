@@ -78,11 +78,11 @@
                   {% csrf_token %}
                     <div class="mb-3 form-group">
                         <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control shadow-none" id="firstName" name="firstName" placeholder="First Name">
+                        <input type="text" class="form-control shadow-none" id="firstName" name="firstName" placeholder="First Name" value="{{ firstName }}" disabled>
                     </div>
                     <div class="mb-3 form-group">
                         <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control shadow-none" id="lastName" name="lasttName" placeholder="Last Name">
+                        <input type="text" class="form-control shadow-none" id="lastName" name="lasttName" placeholder="Last Name" value="{{ lastName }}" disabled>
                     </div>
                     <div class="mb-3 form-group">
                         <label for="email" class="form-label">Email</label>

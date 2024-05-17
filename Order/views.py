@@ -16,8 +16,12 @@ from .utils import currency
 def checkoutForm(request):
     current_user = request.user
     userEmail = None
+    firstName = None
+    lastName = None
     if request.user.is_authenticated:
         userEmail = request.user.email
+        firstName = request.user.firstName
+        lastName = request.user.lastName
         
     if request.method == "POST":
         firstName = request.POST.get('firstName')
@@ -57,7 +61,7 @@ def checkoutForm(request):
         }
         return redirect("Order:paymentOrder")
         
-    return render(request, 'order/formCheckout.html', { 'user_email': userEmail, 'current_user': current_user })
+    return render(request, 'order/formCheckout.html', { 'user_email': userEmail, 'current_user': current_user, 'firstName': firstName, 'lastName': lastName })
 
 
 @login_required
